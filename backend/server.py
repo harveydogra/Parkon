@@ -186,7 +186,8 @@ async def send_verification_email(email: str, verification_token: str):
         msg['To'] = email
         msg['Subject'] = "Park On - Email Verification"
         
-        verification_link = f"https://park-finder-london.preview.emergentagent.com/verify?token={verification_token}"
+        # Send verification email
+        verification_link = f"https://parkon.app/verify?token={verification_token}"
         
         body = f"""
         <html>
