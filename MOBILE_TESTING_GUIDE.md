@@ -8,7 +8,7 @@
 
 ### Android (Chrome):
 1. Open Chrome browser
-2. Go to: `http://72.156.37.131:3000`
+2. Go to: `https://london-parking-1.preview.emergentagent.com`
 3. Chrome will automatically show "Add Park On to Home screen"
 4. Tap "Add" → "Add" 
 5. Find "Park On" icon on home screen
