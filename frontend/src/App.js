@@ -832,14 +832,21 @@ function App() {
 
   const performSearch = async (searchParams) => {
     setLoading(true);
+    console.log('🔍 Starting search with params:', searchParams);
+    
     try {
       const token = localStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
+      console.log('📡 Making API call to:', `${API}/parking/search`);
+      console.log('📊 Search parameters:', searchParams);
       
       const response = await axios.get(`${API}/parking/search`, { 
         params: searchParams,
         headers 
       });
+      
+      console.log('✅ Search response received:', response.data);
       
       if (response.data.success) {
         setParkingSpots(response.data.data);
@@ -847,10 +854,32 @@ function App() {
           latitude: searchParams.latitude,
           longitude: searchParams.longitude
         });
+        console.log(`🎉 Search successful! Found ${response.data.data.length} parking spots`);
+      } else {
+        console.error('❌ Search API returned success:false:', response.data);
+        alert(`Search completed but no results found. ${response.data.message || ''}`);
       }
     } catch (error) {
-      console.error('Search failed:', error);
-      alert('Search failed. Please try again.');
+      console.error('❌ Search failed with error:', error);
+      console.error('❌ Full error details:', {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: error.config?.url,
+        params: error.config?.params
+      });
+      
+      // More specific error messages
+      if (error.response?.status === 422) {
+        alert('Invalid search parameters. Please check your location and try again.');
+      } else if (error.response?.status >= 500) {
+        alert('Server error. Please try again in a moment.');
+      } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+        alert('Network connection issue. Please check your internet connection and try again.');
+      } else {
+        alert(`Search failed: ${error.response?.data?.detail || error.message || 'Unknown error'}. Please try again.`);
+      }
     } finally {
       setLoading(false);
     }
