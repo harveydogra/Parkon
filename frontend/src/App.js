@@ -108,14 +108,15 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
           <div className="input-group">
             <label>Search Radius</label>
             <select 
-              value={searchData.radius_km}
-              onChange={(e) => setSearchData({...searchData, radius_km: parseFloat(e.target.value)})}
+              value={searchData.radius_miles}
+              onChange={(e) => setSearchData({...searchData, radius_miles: parseFloat(e.target.value)})}
               className="input"
             >
-              <option value={0.5}>0.5 km</option>
-              <option value={1.0}>1 km</option>
-              <option value={2.0}>2 km</option>
-              <option value={5.0}>5 km</option>
+              <option value={0.3}>0.3 miles</option>
+              <option value={0.6}>0.6 miles</option>
+              <option value={1.2}>1.2 miles</option>
+              <option value={2.5}>2.5 miles</option>
+              <option value={5.0}>5 miles</option>
             </select>
           </div>
         </div>
