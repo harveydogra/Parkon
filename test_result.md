@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Mobile accessibility issue - User cannot access Park On app via provided IP address (http://72.156.37.131:3000) for PWA installation and testing"
+user_problem_statement: "Distance filtering bug report - User reports all 11 parking spots showing for every postcode search instead of location-specific results. Testing required for E14 4QA, SW11 1AJ, IG1 1TR with different radius values to verify distance filtering functionality."
 
 backend:
   - task: "API Health and Accessibility"
