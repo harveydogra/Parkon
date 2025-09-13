@@ -16,7 +16,7 @@
 
 ### iPhone (Safari):
 1. Open Safari browser  
-2. Go to: `http://72.156.37.131:3000`
+2. Go to: `https://london-parking-1.preview.emergentagent.com`
 3. Tap Share button (box with arrow)
 4. Scroll down → "Add to Home Screen"
 5. Tap "Add"
