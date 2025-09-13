@@ -909,6 +909,7 @@ function App() {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         isGuest={isGuestLogin}
+        onUserLogin={setUser}
       />
       
       <UpgradeModal
