@@ -23,11 +23,16 @@ const Sidebar = ({ isOpen, onClose, user, onLogout, onUpgrade }) => (
           <>
             <div className="user-profile">
               <div className="user-avatar">
-                {user.full_name ? user.full_name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+                {user.full_name 
+                  ? user.full_name.charAt(0).toUpperCase() 
+                  : user.email 
+                    ? user.email.charAt(0).toUpperCase()
+                    : 'G'
+                }
               </div>
               <div className="user-info">
-                <h3>{user.full_name || 'User'}</h3>
-                <p>{user.email}</p>
+                <h3>{user.full_name || user.email || 'Guest User'}</h3>
+                <p>{user.email || 'Guest Session'}</p>
                 <span className={`user-badge ${user.role}`}>
                   {user.role === 'premium' ? '⭐ Premium' : user.role === 'free' ? '🆓 Free' : '👤 Guest'}
                 </span>
