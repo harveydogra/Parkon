@@ -1413,6 +1413,14 @@ body {
   }
 }
 
+/* Focus States for Accessibility */
+.btn:focus,
+.input:focus,
+.plan-card:focus {
+  outline: 2px solid var(--gold-primary);
+  outline-offset: 2px;
+}
+
 /* Animations */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
