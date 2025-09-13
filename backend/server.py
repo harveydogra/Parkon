@@ -244,33 +244,43 @@ class TfLClient:
         self.api_key = TFL_API_KEY
         
     async def get_car_park_occupancy(self) -> List[Dict[str, Any]]:
-        """Get car park and road-related data from TfL"""
+        """Get car park data from TfL"""
         try:
             async with httpx.AsyncClient() as client:
                 params = {"app_key": self.api_key}
                 
-                # Try multiple TfL endpoints that work with parking data
-                endpoints_to_try = [
-                    "/Road",  # General road information
-                    "/StopPoint/Type/NaptanPublicBusCoachTram",  # Bus stops near parking
-                ]
+                # Use the correct TfL car park endpoint
+                try:
+                    response = await client.get(
+                        f"{self.base_url}/Place/Type/CarPark",
+                        params=params,
+                        timeout=15.0
+                    )
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        # Convert TfL car park data to our format
+                        return self._convert_tfl_carpark_data(data[:10])  # Limit to 10 results
+                    else:
+                        logger.warning(f"TfL CarPark endpoint failed with status {response.status_code}")
+                        
+                except Exception as e:
+                    logger.warning(f"TfL CarPark endpoint failed: {e}")
                 
-                for endpoint in endpoints_to_try:
-                    try:
-                        response = await client.get(
-                            f"{self.base_url}{endpoint}",
-                            params=params,
-                            timeout=10.0
-                        )
+                # Fallback to Road endpoint if CarPark fails
+                try:
+                    response = await client.get(
+                        f"{self.base_url}/Road",
+                        params=params,
+                        timeout=10.0
+                    )
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        return self._convert_tfl_data_to_parking(data[:5])  # Limit to 5 results
                         
-                        if response.status_code == 200:
-                            data = response.json()
-                            # Convert road data to parking-like data for demonstration
-                            return self._convert_tfl_data_to_parking(data[:5])  # Limit to 5 results
-                        
-                    except Exception as e:
-                        logger.warning(f"TfL endpoint {endpoint} failed: {e}")
-                        continue
+                except Exception as e:
+                    logger.warning(f"TfL Road endpoint failed: {e}")
                 
                 # If all endpoints fail, use mock data
                 logger.warning("All TfL endpoints failed, using mock data")
@@ -279,6 +289,37 @@ class TfLClient:
         except Exception as e:
             logger.error(f"TfL API error: {e}")
             return self._get_mock_tfl_data()
+    
+    def _convert_tfl_carpark_data(self, carpark_data: List[Dict]) -> List[Dict[str, Any]]:
+        """Convert TfL car park data to parking spot format"""
+        parking_spots = []
+        
+        for i, carpark in enumerate(carpark_data):
+            if carpark.get('lat') and carpark.get('lon'):
+                # Extract additional properties for better data
+                additional_props = carpark.get('additionalProperties', [])
+                capacity = 50  # Default capacity
+                
+                # Try to find capacity in additional properties
+                for prop in additional_props:
+                    if prop.get('key') == 'Capacity':
+                        try:
+                            capacity = int(prop.get('value', 50))
+                        except:
+                            capacity = 50
+                
+                parking_spots.append({
+                    "id": f"tfl_{carpark.get('id', i)}",
+                    "name": f"TfL Car Park - {carpark.get('commonName', 'Unknown')}",
+                    "bayCount": capacity,
+                    "spacesAvailable": max(1, capacity // 3),  # Mock availability as 1/3 of capacity
+                    "lat": float(carpark['lat']),
+                    "lon": float(carpark['lon']),
+                    "lastUpdated": datetime.utcnow().isoformat(),
+                    "carParkType": "TfL Official"
+                })
+        
+        return parking_spots
     
     def _convert_tfl_data_to_parking(self, road_data: List[Dict]) -> List[Dict[str, Any]]:
         """Convert TfL road data to parking spot format"""
