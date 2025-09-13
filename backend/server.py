@@ -504,7 +504,7 @@ async def search_parking_spots(
             "search_params": {
                 "latitude": latitude,
                 "longitude": longitude,
-                "radius_km": radius_km
+                "radius_miles": radius_miles
             },
             "cached_at": datetime.utcnow()
         }
