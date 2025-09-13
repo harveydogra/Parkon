@@ -1,6 +1,6 @@
 # 📱 Park On Mobile Testing Guide
 
-## 🎯 Test URL: http://34.29.89.109:3000
+## 🎯 Test URL: http://72.156.37.131:3000
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### Android (Chrome):
 1. Open Chrome browser
-2. Go to: `http://34.29.89.109:3000`
+2. Go to: `http://72.156.37.131:3000`
 3. Chrome will automatically show "Add Park On to Home screen"
 4. Tap "Add" → "Add" 
 5. Find "Park On" icon on home screen
@@ -16,7 +16,7 @@
 
 ### iPhone (Safari):
 1. Open Safari browser  
-2. Go to: `http://34.29.89.109:3000`
+2. Go to: `http://72.156.37.131:3000`
 3. Tap Share button (box with arrow)
 4. Scroll down → "Add to Home Screen"
 5. Tap "Add"
