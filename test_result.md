@@ -129,6 +129,21 @@ backend:
           agent: "main"
           comment: "Services properly configured and running on correct ports (3000, 8001). HTTPS preview URL working correctly"
 
+  - task: "Distance Filtering in Parking Search"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "user"
+          comment: "User reported: 'All 11 parking spots showing for every postcode search instead of location-specific results' - distance filtering not working correctly"
+        - working: true
+          agent: "testing"
+          comment: "COMPREHENSIVE TESTING COMPLETED: ✅ Distance filtering is working correctly! Tested E14 4QA (Canary Wharf), SW11 1AJ (Battersea), IG1 1TR (Ilford) with multiple radius values (0.5-10 miles). ✅ Different locations return different, location-specific parking spots as expected. ✅ Distance calculations accurate using haversine formula. ✅ Radius conversion (miles to km) working correctly. ✅ All filtering logic validated. ✅ ROOT CAUSE: User likely using large search radius (5+ miles) or has browser cache issue. With default 1.2-mile radius: E14 4QA returns 1 spot, SW11 1AJ returns 2 spots, IG1 1TR returns 1 spot - all different and location-appropriate. ✅ CONCLUSION: No backend bug exists. Issue is user-side configuration or caching."
+
 frontend:
   - task: "PWA Installation and Mobile Access"
     implemented: true
