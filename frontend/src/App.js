@@ -527,7 +527,8 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
           full_name: 'Guest User'
         };
         localStorage.setItem('user', JSON.stringify(guestUser));
-        window.location.reload();
+        setUser(guestUser);
+        setShowLoginModal(false);
         return;
       }
 
