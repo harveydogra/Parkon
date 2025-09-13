@@ -31,7 +31,7 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', 'park_on_db')]
 
 # Create the main app without a prefix
-app = FastAPI(title="Park On - London Parking API", description="Find and book parking in London", version="1.0.0")
+app = FastAPI(title="Park On - Parking API", description="Find and book parking spaces", version="1.0.0")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
