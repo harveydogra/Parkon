@@ -847,6 +847,23 @@ function App() {
 
   return (
     <div className="App">
+      {/* PWA Install Prompt */}
+      {showInstallPrompt && (
+        <div className="install-prompt">
+          <div className="install-content">
+            <span>📱 Install Park On app on your device for better experience!</span>
+            <div className="install-actions">
+              <button className="btn btn-primary" onClick={handleInstallApp}>
+                Install App
+              </button>
+              <button className="btn btn-secondary" onClick={() => setShowInstallPrompt(false)}>
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Sidebar
         isOpen={sidebarOpen}
         onClose={handleCloseSidebar}
