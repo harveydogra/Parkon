@@ -200,13 +200,27 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    let searchParams = searchData;
+    
     // If user entered a location, geocode it first
     if (locationInput.trim()) {
-      const geocoded = await geocodeLocation(locationInput);
-      if (!geocoded) return; // Don't search if geocoding failed
+      const geocodedResult = await geocodeLocation(locationInput);
+      if (!geocodedResult) return; // Don't search if geocoding failed
+      
+      // Use the updated coordinates immediately
+      searchParams = {
+        ...searchData,
+        latitude: geocodedResult.latitude,
+        longitude: geocodedResult.longitude
+      };
     }
     
-    onSearch(searchData);
+    // Clean up empty parameters
+    const cleanParams = { ...searchParams };
+    if (!cleanParams.spot_type) delete cleanParams.spot_type;
+    if (!cleanParams.max_price) delete cleanParams.max_price;
+    
+    onSearch(cleanParams);
   };
 
   const getCurrentLocation = () => {
