@@ -174,6 +174,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "Fixed by implementing geocoding API endpoint and connecting location input to search. Added Nominatim geocoding service, updated frontend to properly handle postcode-to-coordinates conversion. E14 4QA now successfully returns parking results."
+        - working: true
+          agent: "testing"
+          comment: "COMPREHENSIVE TESTING COMPLETED: ✅ All postcode formats work (E14 4QA, e14 4qa, E14 4qa). ✅ Complete geocode→search flow functional. ✅ CRITICAL MOBILE ISSUE FIXED: Backend now handles empty string parameters (spot_type='', max_price='') that mobile apps send, preventing 422 validation errors. ✅ TfL API integration working (58 car parks available, visible with larger search radius). ✅ Parameter validation working correctly. ✅ Works with/without authentication. Root cause of mobile 'search failed' was empty string parameters causing 422 errors - now resolved."
 
 metadata:
   created_by: "main_agent"
