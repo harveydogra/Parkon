@@ -1070,7 +1070,7 @@ body {
 .btn:focus,
 .input:focus,
 .plan-card:focus {
-  outline: 2px solid #d4af37;
+  outline: 2px solid var(--gold-primary);
   outline-offset: 2px;
 }
 
