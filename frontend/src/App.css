@@ -58,16 +58,17 @@ body {
   background: var(--bg-primary);
 }
 
-/* Header Styles - Premium Black & Gold */
+/* Header Styles - Premium Gold with Adaptive Background */
 .header {
-  background: #000000;
-  color: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   padding: 1rem 0;
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid #d4af37;
+  border-bottom: 1px solid var(--gold-primary);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .header-content {
@@ -87,7 +88,7 @@ body {
 
 .logo-icon {
   font-size: 2rem;
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -96,7 +97,7 @@ body {
 .logo-text {
   font-size: 1.75rem;
   font-weight: 900;
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -105,7 +106,7 @@ body {
 
 .logo-subtitle {
   font-size: 0.875rem;
-  color: #888888;
+  color: var(--text-tertiary);
   font-weight: 500;
 }
 
@@ -123,7 +124,7 @@ body {
 
 .user-welcome {
   font-weight: 500;
-  color: #e5e5e5;
+  color: var(--text-secondary);
 }
 
 .user-badge {
@@ -134,18 +135,20 @@ body {
 }
 
 .user-badge.premium {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  color: #000000;
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
+  color: var(--bg-primary);
 }
 
 .user-badge.free {
-  background: linear-gradient(135deg, #333333 0%, #555555 100%);
-  color: #ffffff;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
 }
 
 .user-badge.guest {
-  background: linear-gradient(135deg, #666666 0%, #888888 100%);
-  color: #ffffff;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-secondary);
 }
 
 .auth-buttons {
