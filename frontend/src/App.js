@@ -170,7 +170,7 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
   const [geocoding, setGeocoding] = useState(false);
 
   const geocodeLocation = async (address) => {
-    if (!address.trim()) return false;
+    if (!address.trim()) return null;
     
     setGeocoding(true);
     try {
@@ -185,16 +185,16 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
           latitude,
           longitude
         });
-        return true;
+        return { latitude, longitude };
       }
     } catch (error) {
       console.error('Geocoding failed:', error);
       alert('Could not find location. Please check the address or postcode.');
-      return false;
+      return null;
     } finally {
       setGeocoding(false);
     }
-    return false;
+    return null;
   };
 
   const handleSubmit = async (e) => {
