@@ -342,8 +342,8 @@ const AdBanner = ({ userRole, onUpgrade }) => {
   return (
     <div className="ad-banner">
       <div className="ad-content">
-        <h3>🚗 Premium Parking App</h3>
-        <p>Upgrade to Premium for ad-free experience and exclusive features!</p>
+        <h3>Upgrade Now to enjoy the premium features!</h3>
+        <p>Real-time availability, booking functionality, advanced filters, and ad-free experience.</p>
         <button className="btn btn-upgrade" onClick={onUpgrade}>Upgrade Now</button>
       </div>
     </div>
