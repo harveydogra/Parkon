@@ -632,6 +632,7 @@ function App() {
   const handleUpgrade = () => {
     if (!user || user.role === 'guest') {
       alert('Please create an account to upgrade to Premium');
+      setIsGuestLogin(false); // Show regular login, not guest
       setShowLoginModal(true);
       return;
     }
