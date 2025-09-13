@@ -36,10 +36,10 @@ const Header = ({ user, onLogin, onLogout, onUpgrade }) => (
           </div>
         ) : (
           <div className="auth-buttons">
-            <button className="btn btn-primary" onClick={onLogin}>
+            <button className="btn btn-primary" onClick={() => handleLogin(false)}>
               Login / Sign Up
             </button>
-            <button className="btn btn-secondary" onClick={() => onLogin(true)}>
+            <button className="btn btn-secondary" onClick={() => handleLogin(true)}>
               Continue as Guest
             </button>
           </div>
