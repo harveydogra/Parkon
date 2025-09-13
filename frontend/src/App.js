@@ -732,6 +732,8 @@ function App() {
   const [isGuestLogin, setIsGuestLogin] = useState(false);
   const [searchCenter, setSearchCenter] = useState({ latitude: 51.5074, longitude: -0.1278 });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   useEffect(() => {
     // Check for stored user session
@@ -744,7 +746,35 @@ function App() {
 
     // Perform initial search for London center
     performSearch({ latitude: 51.5074, longitude: -0.1278, radius_miles: 1.2 });
+
+    // PWA Install Prompt
+    const handleBeforeInstallPrompt = (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      setDeferredPrompt(e);
+      setShowInstallPrompt(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleInstallApp = async () => {
+    if (deferredPrompt) {
+      // Show the install prompt
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      // Clear the deferredPrompt
+      setDeferredPrompt(null);
+      setShowInstallPrompt(false);
+    }
+  };
 
   const performSearch = async (searchParams) => {
     setLoading(true);
