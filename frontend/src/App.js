@@ -416,109 +416,51 @@ const ParkingHistory = ({ userRole }) => {
 };
 
 const MapView = ({ spots, center }) => {
-  useEffect(() => {
-    if (window.google && window.google.maps) {
-      initMap();
-    } else {
-      loadGoogleMaps();
-    }
-  }, [spots, center]);
-
-  const loadGoogleMaps = () => {
-    if (GOOGLE_MAPS_API_KEY === 'placeholder-google-key') {
-      return;
-    }
-    
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-    window.initMap = initMap;
-    document.head.appendChild(script);
-  };
-
-  const initMap = () => {
-    if (!window.google || !window.google.maps) return;
-
-    const map = new window.google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: { lat: center.latitude, lng: center.longitude },
-      styles: [
-        {
-          elementType: 'geometry',
-          stylers: [{ color: '#212121' }]
-        },
-        {
-          elementType: 'labels.icon',
-          stylers: [{ visibility: 'off' }]
-        },
-        {
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#757575' }]
-        },
-        {
-          elementType: 'labels.text.stroke',
-          stylers: [{ color: '#212121' }]
-        }
-      ]
-    });
-
-    // Add markers for parking spots
-    spots.forEach(spot => {
-      const marker = new window.google.maps.Marker({
-        position: { 
-          lat: spot.location.latitude, 
-          lng: spot.location.longitude 
-        },
-        map: map,
-        title: spot.name,
-        icon: {
-          url: spot.status === 'available' ? 
-            'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="14" fill="#d4af37" stroke="#fff" stroke-width="2"/>
-                <text x="16" y="20" text-anchor="middle" fill="black" font-size="16" font-weight="bold">P</text>
-              </svg>
-            `) :
-            'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="14" fill="#666666" stroke="#fff" stroke-width="2"/>
-                <text x="16" y="20" text-anchor="middle" fill="white" font-size="16" font-weight="bold">P</text>
-              </svg>
-            `),
-          scaledSize: new window.google.maps.Size(32, 32)
-        }
-      });
-
-      const infoWindow = new window.google.maps.InfoWindow({
-        content: `
-          <div style="padding: 10px; background: #111; color: #fff; border-radius: 8px;">
-            <h3 style="margin: 0 0 10px 0; color: #d4af37;">${spot.name}</h3>
-            <p style="margin: 5px 0;"><strong>Price:</strong> £${spot.pricing.hourly_rate}/hour</p>
-            <p style="margin: 5px 0;"><strong>Status:</strong> ${spot.status}</p>
-            <p style="margin: 5px 0;"><strong>Distance:</strong> ${(spot.distance_km * 0.621371).toFixed(1)} miles</p>
-          </div>
-        `
-      });
-
-      marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-      });
-    });
-  };
+  const mapCenter = [center.latitude, center.longitude];
 
   return (
     <div className="map-container">
-      <div id="map" className="map"></div>
-      {GOOGLE_MAPS_API_KEY === 'placeholder-google-key' && (
-        <div className="map-placeholder">
-          <div className="map-placeholder-content">
-            <h3>Premium Map View</h3>
-            <p>Google Maps integration requires API key</p>
-            <p>Found {spots.length} parking spots in the area</p>
-          </div>
-        </div>
-      )}
+      <MapContainer 
+        center={mapCenter} 
+        zoom={13} 
+        className="map"
+        style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        
+        {spots.map(spot => (
+          <Marker
+            key={spot.id}
+            position={[spot.location.latitude, spot.location.longitude]}
+            icon={createParkingIcon(spot.status === 'available')}
+          >
+            <Popup>
+              <div className="map-popup">
+                <h3 style={{ margin: '0 0 10px 0', color: 'var(--text-primary)' }}>
+                  {spot.name}
+                </h3>
+                <p style={{ margin: '5px 0', color: 'var(--text-secondary)' }}>
+                  <strong>Price:</strong> £{spot.pricing.hourly_rate}/hour
+                </p>
+                <p style={{ margin: '5px 0', color: 'var(--text-secondary)' }}>
+                  <strong>Status:</strong> {spot.status}
+                </p>
+                <p style={{ margin: '5px 0', color: 'var(--text-secondary)' }}>
+                  <strong>Distance:</strong> {(spot.distance_km * 0.621371).toFixed(1)} miles
+                </p>
+                {spot.amenities && spot.amenities.length > 0 && (
+                  <p style={{ margin: '5px 0', color: 'var(--text-secondary)' }}>
+                    <strong>Amenities:</strong> {spot.amenities.join(', ')}
+                  </p>
+                )}
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
     </div>
   );
 };
