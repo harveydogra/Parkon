@@ -381,8 +381,9 @@ class TfLClient:
 
 # Mock JustPark data
 def get_mock_justpark_data() -> List[Dict[str, Any]]:
-    """Mock JustPark parking spots for demonstration"""
+    """Mock JustPark parking spots for comprehensive London coverage"""
     return [
+        # East London
         {
             "id": "jp_001",
             "name": "Private Driveway - Shoreditch",
@@ -418,6 +419,160 @@ def get_mock_justpark_data() -> List[Dict[str, Any]]:
             "type": "standard",
             "amenities": ["valet", "covered"],
             "capacity": 1
+        },
+        
+        # Southwest London (SW postcodes)
+        {
+            "id": "jp_004",
+            "name": "Battersea Residential Parking",
+            "location": {"lat": 51.4614, "lng": -0.1717},
+            "address": "12 Lavender Hill",
+            "postcode": "SW11 1AJ",
+            "hourly_rate": 4.00,
+            "daily_rate": 28.00,
+            "type": "standard",
+            "amenities": ["secure"],
+            "capacity": 1
+        },
+        {
+            "id": "jp_005",
+            "name": "Chelsea Private Car Park",
+            "location": {"lat": 51.4875, "lng": -0.1687},
+            "address": "Kings Road",
+            "postcode": "SW3 4LY",
+            "hourly_rate": 12.00,
+            "daily_rate": 85.00,
+            "type": "standard",
+            "amenities": ["valet", "covered", "secure"],
+            "capacity": 3
+        },
+        {
+            "id": "jp_006",
+            "name": "Clapham Junction Station Parking",
+            "location": {"lat": 51.4643, "lng": -0.1705},
+            "address": "Station Approach",
+            "postcode": "SW11 2QP",
+            "hourly_rate": 3.20,
+            "daily_rate": 22.00,
+            "type": "standard",
+            "amenities": ["monitored"],
+            "capacity": 2
+        },
+        
+        # North London (N postcodes)
+        {
+            "id": "jp_007",
+            "name": "Camden Market Parking",
+            "location": {"lat": 51.5412, "lng": -0.1434},
+            "address": "Camden Lock Place",
+            "postcode": "NW1 8AF",
+            "hourly_rate": 5.50,
+            "daily_rate": 38.00,
+            "type": "standard",
+            "amenities": ["covered"],
+            "capacity": 1
+        },
+        {
+            "id": "jp_008",
+            "name": "Islington Residential Parking",
+            "location": {"lat": 51.5362, "lng": -0.1031},
+            "address": "Upper Street",
+            "postcode": "N1 2TX",
+            "hourly_rate": 4.80,
+            "daily_rate": 32.00,
+            "type": "standard",
+            "amenities": ["secure"],
+            "capacity": 1
+        },
+        
+        # Southeast London (SE postcodes)  
+        {
+            "id": "jp_009",
+            "name": "Greenwich Observatory Parking",
+            "location": {"lat": 51.4769, "lng": 0.0005},
+            "address": "Romney Road",
+            "postcode": "SE10 9NF",
+            "hourly_rate": 3.80,
+            "daily_rate": 26.00,
+            "type": "standard",
+            "amenities": ["tourist_friendly"],
+            "capacity": 2
+        },
+        {
+            "id": "jp_010",
+            "name": "Bermondsey Street Parking",
+            "location": {"lat": 51.4977, "lng": -0.0782},
+            "address": "Bermondsey Street",
+            "postcode": "SE1 3UW",
+            "hourly_rate": 4.20,
+            "daily_rate": 29.00,
+            "type": "standard",
+            "amenities": ["covered"],
+            "capacity": 1
+        },
+        
+        # Northwest London (NW postcodes)
+        {
+            "id": "jp_011", 
+            "name": "Hampstead Heath Parking",
+            "location": {"lat": 51.5606, "lng": -0.1665},
+            "address": "Hampstead Lane",
+            "postcode": "NW3 7JR",
+            "hourly_rate": 2.50,
+            "daily_rate": 18.00,
+            "type": "standard",
+            "amenities": ["scenic"],
+            "capacity": 1
+        },
+        {
+            "id": "jp_012",
+            "name": "Baker Street Underground Parking",
+            "location": {"lat": 51.5226, "lng": -0.1571},
+            "address": "Baker Street",
+            "postcode": "NW1 6XE",
+            "hourly_rate": 7.20,
+            "daily_rate": 50.00,
+            "type": "standard",
+            "amenities": ["underground", "secure"],
+            "capacity": 2
+        },
+        
+        # Outer London Areas
+        {
+            "id": "jp_013",
+            "name": "Ilford Town Centre Parking",
+            "location": {"lat": 51.5617, "lng": 0.0857},
+            "address": "High Road",
+            "postcode": "IG1 1TR",
+            "hourly_rate": 2.80,
+            "daily_rate": 19.00,
+            "type": "standard",
+            "amenities": ["shopping_centre"],
+            "capacity": 2
+        },
+        {
+            "id": "jp_014",
+            "name": "Richmond Park Parking",
+            "location": {"lat": 51.4613, "lng": -0.2839},
+            "address": "Petersham Road",
+            "postcode": "TW10 5HS",
+            "hourly_rate": 2.00,
+            "daily_rate": 15.00,
+            "type": "standard",
+            "amenities": ["park_access"],
+            "capacity": 3
+        },
+        {
+            "id": "jp_015",
+            "name": "Croydon Shopping Centre",
+            "location": {"lat": 51.3727, "lng": -0.0963},
+            "address": "North End",
+            "postcode": "CR0 1TY",
+            "hourly_rate": 3.00,
+            "daily_rate": 20.00,
+            "type": "standard",
+            "amenities": ["shopping_centre", "covered"],
+            "capacity": 4
         }
     ]
 
