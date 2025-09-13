@@ -237,8 +237,10 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
             <div className="location-input">
               <input
                 type="text"
-                placeholder="Enter address or use current location"
+                placeholder="Enter address or postcode (e.g., E14 4QA)"
                 className="input"
+                value={locationInput}
+                onChange={(e) => setLocationInput(e.target.value)}
               />
               <button 
                 type="button" 
