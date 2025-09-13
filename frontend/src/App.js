@@ -7,34 +7,103 @@ const API = `${BACKEND_URL}/api`;
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'placeholder-google-key';
 
 // Components
-const Header = ({ user, onLogin, onLogout, onUpgrade }) => (
+const Sidebar = ({ isOpen, onClose, user, onLogout, onUpgrade }) => (
+  <div className={`sidebar-overlay ${isOpen ? 'active' : ''}`} onClick={onClose}>
+    <div className={`sidebar ${isOpen ? 'active' : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div className="sidebar-header">
+        <div className="sidebar-logo">
+          <span className="logo-icon">🅿️</span>
+          <span className="logo-text">Park On</span>
+        </div>
+        <button className="sidebar-close" onClick={onClose}>×</button>
+      </div>
+      
+      <div className="sidebar-content">
+        {user && (
+          <>
+            <div className="user-profile">
+              <div className="user-avatar">
+                {user.full_name ? user.full_name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+              </div>
+              <div className="user-info">
+                <h3>{user.full_name || 'User'}</h3>
+                <p>{user.email}</p>
+                <span className={`user-badge ${user.role}`}>
+                  {user.role === 'premium' ? '⭐ Premium' : user.role === 'free' ? '🆓 Free' : '👤 Guest'}
+                </span>
+              </div>
+            </div>
+            
+            <div className="sidebar-menu">
+              <div className="menu-section">
+                <h4>Account</h4>
+                <ul>
+                  <li><a href="#profile">My Profile</a></li>
+                  {user.role === 'premium' && (
+                    <li><a href="#history">Parking History</a></li>
+                  )}
+                  {user.role === 'premium' && (
+                    <li><a href="#bookings">My Bookings</a></li>
+                  )}
+                </ul>
+              </div>
+              
+              {user.role !== 'premium' && (
+                <div className="menu-section">
+                  <h4>Upgrade</h4>
+                  <ul>
+                    <li>
+                      <button className="upgrade-menu-btn" onClick={onUpgrade}>
+                        ⭐ Upgrade to Premium
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+              
+              <div className="menu-section">
+                <h4>App</h4>
+                <ul>
+                  <li><a href="#settings">Settings</a></li>
+                  <li><a href="#help">Help & Support</a></li>
+                  <li><a href="#about">About</a></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="sidebar-footer">
+              <button className="btn btn-secondary logout-btn" onClick={onLogout}>
+                🚪 Logout
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+const Header = ({ user, onLogin, onLogout, onUpgrade, onToggleSidebar }) => (
   <header className="header">
     <div className="header-content">
-      <div className="logo">
-        <span className="logo-icon">🅿️</span>
-        <span className="logo-text">Park On</span>
-        <span className="logo-subtitle">London</span>
+      <div className="header-left">
+        {user ? (
+          <button className="hamburger-menu" onClick={onToggleSidebar}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        ) : null}
+        
+        <div className="logo">
+          <span className="logo-icon">🅿️</span>
+          <span className="logo-text">Park On</span>
+          <span className="logo-subtitle">London</span>
+        </div>
       </div>
       
       <nav className="nav">
-        {user ? (
-          <div className="user-section">
-            <span className="user-welcome">
-              Hello, {user.full_name || user.email}
-            </span>
-            <span className={`user-badge ${user.role}`}>
-              {user.role === 'premium' ? '⭐ Premium' : user.role === 'free' ? '🆓 Free' : '👤 Guest'}
-            </span>
-            {user.role !== 'premium' && (
-              <button className="btn btn-upgrade" onClick={onUpgrade}>
-                Upgrade to Premium
-              </button>
-            )}
-            <button className="btn btn-secondary" onClick={onLogout}>
-              Logout
-            </button>
-          </div>
-        ) : (
+        {!user && (
           <div className="auth-buttons">
             <button className="btn btn-primary" onClick={() => onLogin(false)}>
               Login / Sign Up
