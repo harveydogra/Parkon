@@ -167,8 +167,8 @@ class ParkOnAPITester:
             print("❌ Skipping premium upgrade test - no token available")
             return False
             
-        upgrade_data = {"plan_name": "Premium Monthly"}
-        success, response = self.run_test("Premium Upgrade", "POST", "/subscription/upgrade", 200, upgrade_data)
+        # Use query parameter instead of request body
+        success, response = self.run_test("Premium Upgrade", "POST", "/subscription/upgrade?plan_name=Premium Monthly", 200)
         if success:
             print("   Successfully upgraded to Premium")
         return success
