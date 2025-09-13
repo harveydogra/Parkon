@@ -389,7 +389,7 @@ class ParkOnAPITester:
         search_params = {
             "latitude": 51.5074,  # Central London
             "longitude": -0.1278,
-            "radius_miles": 2.0
+            "radius_miles": 10.0  # Larger radius to catch TfL car parks at outer stations
         }
         
         success, response = self.run_test("TfL Integration Test", "GET", "/parking/search", 200, search_params)
