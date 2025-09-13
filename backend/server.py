@@ -443,7 +443,7 @@ async def search_parking_spots(
                         capacity=car_park.get('bayCount', 1),
                         amenities=["secure", "monitored"],
                         provider="tfl",
-                        is_real_time=is_premium,
+                        is_real_time=bool(is_premium),
                         distance_km=round(distance, 2),
                         walk_time_mins=int(distance * 12)  # Approximate walking time
                     )
