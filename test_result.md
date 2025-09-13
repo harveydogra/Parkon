@@ -160,6 +160,21 @@ frontend:
           agent: "main"
           comment: "Updated all URLs in MOBILE_TESTING_GUIDE.md to correct HTTPS preview URL: https://london-parking-1.preview.emergentagent.com"
 
+  - task: "Postcode Search Functionality"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js, backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "user"
+          comment: "User reported search failed when entering postcode E14 4QA - no real-time data showing"
+        - working: true
+          agent: "main"
+          comment: "Fixed by implementing geocoding API endpoint and connecting location input to search. Added Nominatim geocoding service, updated frontend to properly handle postcode-to-coordinates conversion. E14 4QA now successfully returns parking results."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
