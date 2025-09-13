@@ -547,6 +547,63 @@ async def create_guest_session():
     )
 
 # Parking search endpoints
+# Geocoding helper function
+async def geocode_address(address: str) -> Optional[Dict[str, float]]:
+    """Convert address/postcode to coordinates using Nominatim"""
+    try:
+        async with httpx.AsyncClient() as client:
+            # Use Nominatim API for geocoding
+            params = {
+                'q': f"{address}, London, UK",
+                'format': 'json',
+                'addressdetails': '1',
+                'limit': '1'
+            }
+            
+            response = await client.get(
+                'https://nominatim.openstreetmap.org/search',
+                params=params,
+                headers={'User-Agent': 'ParkOn/1.0'}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data and len(data) > 0:
+                    result = data[0]
+                    return {
+                        'latitude': float(result['lat']),
+                        'longitude': float(result['lon']),
+                        'display_name': result.get('display_name', address)
+                    }
+            
+            return None
+    except Exception as e:
+        logger.error(f"Geocoding error: {e}")
+        return None
+
+@api_router.get("/geocode", response_model=APIResponse)
+async def geocode_location(
+    q: str = Query(..., description="Address or postcode to geocode")
+):
+    """Convert address or postcode to coordinates"""
+    try:
+        result = await geocode_address(q)
+        
+        if result:
+            return APIResponse(
+                success=True,
+                data=result,
+                message=f"Successfully geocoded: {q}"
+            )
+        else:
+            raise HTTPException(status_code=404, detail="Location not found")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Geocoding endpoint error: {e}")
+        raise HTTPException(status_code=500, detail="Geocoding failed")
+
 @api_router.get("/parking/search", response_model=APIResponse)
 async def search_parking_spots(
     latitude: float = Query(..., ge=-90, le=90),
