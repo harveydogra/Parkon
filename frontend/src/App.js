@@ -1,10 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './App.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
-const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'placeholder-google-key';
+
+// Fix for default markers in react-leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
+
+// Custom parking markers
+const createParkingIcon = (available = true) => {
+  const color = available ? '#10b981' : '#ef4444';
+  return L.divIcon({
+    html: `
+      <div style="
+        background: ${color};
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 3px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      ">P</div>
+    `,
+    className: 'custom-parking-icon',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
+};
 
 // Components
 const Sidebar = ({ isOpen, onClose, user, onLogout, onUpgrade }) => (
