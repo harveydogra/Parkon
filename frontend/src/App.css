@@ -386,11 +386,18 @@ body {
 
 /* Results Section */
 .results-section {
-  background: #111111;
+  background: var(--bg-secondary);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid #333333;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .results-section {
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .results-header {
@@ -399,22 +406,23 @@ body {
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #333333;
+  border-bottom: 2px solid var(--border-primary);
 }
 
 .results-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .upgrade-hint {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: var(--bg-tertiary);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  color: #d4af37;
-  border: 1px solid #d4af37;
+  color: var(--gold-primary);
+  border: 1px solid var(--gold-primary);
+  transition: background-color 0.3s ease;
 }
 
 .parking-grid {
@@ -423,10 +431,10 @@ body {
   gap: 1rem;
 }
 
-/* Parking Card - Premium Dark Design */
+/* Parking Card - Premium Adaptive Design */
 .parking-card {
-  background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
-  border: 2px solid #333333;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-primary);
   border-radius: 1rem;
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -441,13 +449,19 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #d4af37, #ffffff, #d4af37);
+  background: linear-gradient(90deg, var(--gold-primary), var(--text-primary), var(--gold-primary));
 }
 
 .parking-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.2);
-  border-color: #d4af37;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+  border-color: var(--gold-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .parking-card:hover {
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.2);
+  }
 }
 
 .card-header {
@@ -460,7 +474,7 @@ body {
 .spot-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -479,27 +493,28 @@ body {
 }
 
 .status-badge.available {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
   color: #ffffff;
 }
 
 .status-badge.occupied {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
   color: #ffffff;
 }
 
 .provider-badge {
-  background: linear-gradient(135deg, #333333 0%, #555555 100%);
-  color: #ffffff;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-secondary);
 }
 
 .realtime-badge {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  color: #000000;
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
+  color: var(--bg-primary);
 }
 
 .discount-badge {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
   color: #ffffff;
   font-weight: 700;
 }
@@ -514,7 +529,7 @@ body {
 
 .address {
   font-weight: 500;
-  color: #cccccc;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
 }
 
@@ -522,7 +537,7 @@ body {
   display: flex;
   gap: 1rem;
   font-size: 0.875rem;
-  color: #888888;
+  color: var(--text-tertiary);
 }
 
 .pricing-info {
@@ -541,27 +556,27 @@ body {
 .price {
   font-size: 1.75rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .price.discounted {
-  color: #10b981;
+  color: var(--success);
 }
 
 .price-unit {
   font-size: 1rem;
-  color: #888888;
+  color: var(--text-tertiary);
   font-weight: 500;
 }
 
 .price-daily {
   font-size: 0.875rem;
-  color: #888888;
+  color: var(--text-tertiary);
 }
 
 .original-price {
   text-decoration: line-through;
-  color: #666666;
+  color: var(--text-tertiary);
   font-size: 1rem;
   margin-right: 0.5rem;
 }
@@ -573,13 +588,14 @@ body {
 }
 
 .amenity-tag {
-  background: linear-gradient(135deg, #333333 0%, #555555 100%);
-  color: #ffffff;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 500;
-  border: 1px solid #666666;
+  border: 1px solid var(--border-secondary);
+  transition: background-color 0.3s ease;
 }
 
 .card-actions {
