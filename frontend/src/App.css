@@ -702,14 +702,14 @@ body {
   font-size: 0.875rem;
 }
 
-/* Modal Styles - Dark Theme */
+/* Modal Styles - Adaptive Theme */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -717,16 +717,29 @@ body {
   backdrop-filter: blur(8px);
 }
 
+@media (prefers-color-scheme: dark) {
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
 .modal {
-  background: #111111;
+  background: var(--bg-primary);
   border-radius: 1rem;
   padding: 0;
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-  border: 1px solid #333333;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .modal {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .modal-header {
@@ -734,14 +747,15 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 2px solid #333333;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-bottom: 2px solid var(--border-primary);
+  background: var(--bg-secondary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .modal-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -749,7 +763,7 @@ body {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #888888;
+  color: var(--text-tertiary);
   cursor: pointer;
   padding: 0.25rem;
   border-radius: 0.25rem;
@@ -757,8 +771,8 @@ body {
 }
 
 .close-btn:hover {
-  background: #333333;
-  color: #ffffff;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .auth-form {
@@ -769,48 +783,50 @@ body {
 }
 
 .guest-info {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: var(--bg-secondary);
   padding: 1.5rem;
   border-radius: 0.75rem;
-  border: 2px solid #d4af37;
+  border: 2px solid var(--gold-primary);
+  transition: background-color 0.3s ease;
 }
 
 .guest-info p {
   margin-bottom: 1rem;
-  color: #cccccc;
+  color: var(--text-secondary);
 }
 
 .guest-info ul {
   margin-left: 1.5rem;
   margin-bottom: 1rem;
-  color: #cccccc;
+  color: var(--text-secondary);
 }
 
 .auth-switch {
   text-align: center;
-  color: #888888;
+  color: var(--text-tertiary);
   font-size: 0.875rem;
 }
 
 .link-btn {
   background: none;
   border: none;
-  color: #d4af37;
+  color: var(--gold-primary);
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
 }
 
 .email-verification {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: var(--bg-secondary);
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #d4af37;
+  border: 1px solid var(--gold-primary);
   margin-top: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .email-verification p {
-  color: #d4af37;
+  color: var(--gold-primary);
   font-size: 0.875rem;
   text-align: center;
 }
