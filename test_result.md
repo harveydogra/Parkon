@@ -201,8 +201,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "PWA Installation and Mobile Access"
-    - "Mobile Testing Guide Accuracy"
+    - "Distance Filtering in Parking Search"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
