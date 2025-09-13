@@ -744,6 +744,7 @@ function App() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isGuestLogin, setIsGuestLogin] = useState(false);
   const [searchCenter, setSearchCenter] = useState({ latitude: 51.5074, longitude: -0.1278 });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Check for stored user session
@@ -793,6 +794,7 @@ function App() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
+    setSidebarOpen(false);
     window.location.reload();
   };
 
@@ -801,9 +803,19 @@ function App() {
       alert('Please create an account to upgrade to Premium');
       setIsGuestLogin(false); // Show regular login, not guest
       setShowLoginModal(true);
+      setSidebarOpen(false);
       return;
     }
     setShowUpgradeModal(true);
+    setSidebarOpen(false);
+  };
+
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
   };
 
   const handleBooking = (spot) => {
@@ -818,11 +830,20 @@ function App() {
 
   return (
     <div className="App">
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={handleCloseSidebar}
+        user={user}
+        onLogout={handleLogout}
+        onUpgrade={handleUpgrade}
+      />
+      
       <Header 
         user={user}
         onLogin={handleLogin}
         onLogout={handleLogout}
         onUpgrade={handleUpgrade}
+        onToggleSidebar={handleToggleSidebar}
       />
       
       <main className="main-content">
