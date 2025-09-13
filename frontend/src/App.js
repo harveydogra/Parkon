@@ -588,7 +588,7 @@ function App() {
     }
 
     // Perform initial search for London center
-    performSearch({ latitude: 51.5074, longitude: -0.1278, radius_km: 2.0 });
+    performSearch({ latitude: 51.5074, longitude: -0.1278, radius_miles: 1.2 });
   }, []);
 
   const performSearch = async (searchParams) => {
