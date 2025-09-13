@@ -1216,13 +1216,6 @@ body {
 @media (max-width: 768px) {
   .header-content {
     padding: 0 1rem;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .nav {
-    width: 100%;
-    justify-content: center;
   }
 
   .main-content {
@@ -1241,14 +1234,9 @@ body {
     position: static;
   }
 
-  .user-section {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
   .auth-buttons {
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   .pricing-plans {
@@ -1259,8 +1247,28 @@ body {
     flex-direction: column;
   }
 
+  .sidebar {
+    width: 280px;
+  }
+
+  .hamburger-menu {
+    width: 20px;
+    height: 20px;
+  }
+
+  .hamburger-menu span {
+    width: 20px;
+    height: 2px;
+  }
+}
+
+@media (max-width: 480px) {
   .logo-text {
     font-size: 1.5rem;
+  }
+
+  .logo-subtitle {
+    display: none;
   }
 
   .search-section {
@@ -1279,18 +1287,30 @@ body {
   .spot-badges {
     align-items: flex-start;
   }
-}
-
-@media (max-width: 480px) {
-  .logo {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-  }
 
   .modal {
     width: 95%;
     margin: 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .user-profile {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .hamburger-menu {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hamburger-menu span {
+    width: 18px;
+    height: 2px;
   }
 }
 
