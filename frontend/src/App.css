@@ -841,15 +841,16 @@ body {
 }
 
 .premium-features {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: var(--bg-secondary);
   padding: 1.5rem;
   border-radius: 0.75rem;
   margin-bottom: 2rem;
-  border: 2px solid #d4af37;
+  border: 2px solid var(--gold-primary);
+  transition: background-color 0.3s ease;
 }
 
 .premium-features h3 {
-  color: #d4af37;
+  color: var(--gold-primary);
   margin-bottom: 1rem;
   font-size: 1.25rem;
 }
@@ -861,9 +862,9 @@ body {
 
 .premium-features li {
   padding: 0.5rem 0;
-  color: #cccccc;
+  color: var(--text-secondary);
   font-weight: 500;
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .premium-features li:last-child {
@@ -878,24 +879,30 @@ body {
 }
 
 .plan-card {
-  border: 2px solid #333333;
+  border: 2px solid var(--border-primary);
   border-radius: 1rem;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
+  background: var(--bg-primary);
 }
 
 .plan-card:hover {
-  border-color: #d4af37;
+  border-color: var(--gold-primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .plan-card:hover {
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+  }
 }
 
 .plan-card.selected {
-  border-color: #d4af37;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-color: var(--gold-primary);
+  background: var(--bg-secondary);
 }
 
 .popular-badge {
@@ -903,8 +910,8 @@ body {
   top: -0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  color: #000000;
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
+  color: var(--bg-primary);
   padding: 0.25rem 1rem;
   border-radius: 1rem;
   font-size: 0.75rem;
@@ -914,24 +921,24 @@ body {
 .plan-card h4 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
 .price {
   font-size: 2rem;
   font-weight: 800;
-  color: #d4af37;
+  color: var(--gold-primary);
 }
 
 .price span {
   font-size: 1rem;
-  color: #888888;
+  color: var(--text-tertiary);
   font-weight: 500;
 }
 
 .savings {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
   color: #ffffff;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
@@ -942,7 +949,7 @@ body {
 }
 
 .plan-card p {
-  color: #888888;
+  color: var(--text-tertiary);
   font-size: 0.875rem;
 }
 
@@ -957,11 +964,11 @@ body {
 .no-results {
   text-align: center;
   padding: 3rem;
-  color: #888888;
+  color: var(--text-tertiary);
 }
 
 .no-results h3 {
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
