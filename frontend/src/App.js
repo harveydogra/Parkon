@@ -156,7 +156,7 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
 
   return (
     <div className="search-section">
-      <h2>Find Premium Parking in London</h2>
+      <h2>Find Premium Parking</h2>
       <form onSubmit={handleSubmit} className="search-form">
         <div className="search-row">
           <div className="input-group">
