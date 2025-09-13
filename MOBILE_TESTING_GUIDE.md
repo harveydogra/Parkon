@@ -150,4 +150,4 @@ If you encounter any issues during testing:
 
 **Your Park On app is ready for real-world testing!** 🚀
 
-Test URL: **http://34.29.89.109:3000**
+Test URL: **https://london-parking-1.preview.emergentagent.com**
