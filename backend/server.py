@@ -402,13 +402,16 @@ async def get_current_user_optional(credentials: HTTPAuthorizationCredentials = 
 async def search_parking_spots(
     latitude: float = Query(..., ge=-90, le=90),
     longitude: float = Query(..., ge=-180, le=180),
-    radius_km: float = Query(2.0, ge=0.1, le=10.0),
+    radius_miles: float = Query(1.2, ge=0.1, le=10.0, description="Search radius in miles"),
     spot_type: Optional[ParkingSpotType] = Query(None),
     max_price: Optional[float] = Query(None, ge=0),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Search for parking spots near location"""
     try:
+        # Convert miles to kilometers for internal calculations
+        radius_km = radius_miles * 1.60934
+        
         all_spots = []
         
         # Get TfL car park data (always available)
