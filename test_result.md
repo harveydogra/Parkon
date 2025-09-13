@@ -192,3 +192,5 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: "Fixed mobile accessibility issue. Root cause was incorrect IP addresses in testing guide. App is fully functional at https://london-parking-1.preview.emergentagent.com with PWA service worker working correctly. Updated MOBILE_TESTING_GUIDE.md with correct URL."
+    - agent: "main"
+      message: "RESOLVED: Fixed postcode search functionality. Root cause was missing geocoding service - location input was not connected to search. Implemented Nominatim geocoding API endpoint, updated frontend to convert postcodes to coordinates before searching. E14 4QA now returns 1 parking spot successfully. Real-time TfL API integration working correctly."
