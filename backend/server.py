@@ -634,14 +634,17 @@ async def get_subscription_plans():
         message="Subscription plans retrieved"
     )
 
+class UpgradeRequest(BaseModel):
+    plan_name: str
+
 @api_router.post("/subscription/upgrade", response_model=APIResponse)
 async def upgrade_to_premium(
-    plan_name: str,
+    upgrade_request: UpgradeRequest,
     current_user: User = Depends(get_current_user)
 ):
     """Upgrade user to premium subscription"""
     # Mock payment processing
-    duration_days = 30 if "Monthly" in plan_name else 365
+    duration_days = 30 if "Monthly" in upgrade_request.plan_name else 365
     expires_at = datetime.utcnow() + timedelta(days=duration_days)
     
     await db.users.update_one(
