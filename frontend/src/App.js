@@ -659,7 +659,7 @@ function App() {
       />
       
       <main className="main-content">
-        <AdBanner userRole={user?.role} />
+        <AdBanner userRole={user?.role} onUpgrade={handleUpgrade} />
         
         <SearchForm 
           onSearch={performSearch}
