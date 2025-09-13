@@ -520,10 +520,13 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
     try {
       if (isGuest) {
         const response = await axios.post(`${API}/auth/guest`);
-        localStorage.setItem('user', JSON.stringify({ 
-          role: 'guest', 
-          guest_id: response.data.data.guest_id 
-        }));
+        const guestUser = {
+          role: 'guest',
+          guest_id: response.data.data.guest_id,
+          email: 'guest@parkon.com',
+          full_name: 'Guest User'
+        };
+        localStorage.setItem('user', JSON.stringify(guestUser));
         window.location.reload();
         return;
       }
