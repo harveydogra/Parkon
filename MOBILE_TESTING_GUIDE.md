@@ -1,6 +1,6 @@
 # 📱 Park On Mobile Testing Guide
 
-## 🎯 Test URL: http://72.156.37.131:3000
+## 🎯 Test URL: https://london-parking-1.preview.emergentagent.com
 
 ---
 
