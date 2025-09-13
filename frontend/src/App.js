@@ -173,28 +173,52 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
     if (!address.trim()) return null;
     
     setGeocoding(true);
+    console.log('🌍 Starting geocoding for:', address);
+    
     try {
       const response = await axios.get(`${API}/geocode`, { 
         params: { q: address }
       });
       
+      console.log('✅ Geocoding response:', response.data);
+      
       if (response.data.success) {
         const { latitude, longitude } = response.data.data;
+        console.log(`📍 Geocoded "${address}" to coordinates:`, { latitude, longitude });
+        
         setSearchData({
           ...searchData,
           latitude,
           longitude
         });
         return { latitude, longitude };
+      } else {
+        console.error('❌ Geocoding failed - API returned success:false:', response.data);
+        alert('Could not find location. Please check the address or postcode.');
+        return null;
       }
     } catch (error) {
-      console.error('Geocoding failed:', error);
-      alert('Could not find location. Please check the address or postcode.');
+      console.error('❌ Geocoding failed with error:', error);
+      console.error('❌ Full geocoding error details:', {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: error.config?.url,
+        params: error.config?.params
+      });
+      
+      if (error.response?.status === 404) {
+        alert('Location not found. Please try a different address or postcode.');
+      } else if (error.response?.status >= 500) {
+        alert('Geocoding service temporarily unavailable. Please try again.');
+      } else {
+        alert(`Could not find location: ${error.response?.data?.detail || error.message}. Please check the address or postcode.`);
+      }
       return null;
     } finally {
       setGeocoding(false);
     }
-    return null;
   };
 
   const handleSubmit = async (e) => {
