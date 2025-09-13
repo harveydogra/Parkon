@@ -17,6 +17,9 @@ import asyncio
 import httpx
 import json
 from enum import Enum
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Load environment variables
 ROOT_DIR = FilePath(__file__).parent
@@ -41,6 +44,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production'
 # TfL and API configuration
 TFL_API_KEY = os.environ.get('TFL_API_KEY', 'placeholder-tfl-key')
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', 'placeholder-google-key')
+
+# Email configuration for verification
+SMTP_SERVER = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
+SMTP_PORT = int(os.environ.get('SMTP_PORT', '587'))
+SMTP_USERNAME = os.environ.get('SMTP_USERNAME', '')
+SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -102,6 +111,8 @@ class User(BaseModel):
     full_name: Optional[str] = None
     role: UserRole = UserRole.FREE
     is_active: bool = True
+    is_verified: bool = False
+    verification_token: Optional[str] = None
     subscription_expires: Optional[datetime] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -113,6 +124,18 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
+
+class ParkingHistoryItem(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    spot_id: str
+    spot_name: str
+    start_time: datetime
+    end_time: datetime
+    duration_hours: float
+    total_cost: float
+    booking_reference: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class BookingRequest(BaseModel):
     spot_id: str
@@ -149,6 +172,69 @@ class APIResponse(BaseModel):
     data: Optional[Any] = None
     message: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+# Email verification function
+async def send_verification_email(email: str, verification_token: str):
+    """Send email verification"""
+    try:
+        if not SMTP_USERNAME or not SMTP_PASSWORD:
+            logger.warning("SMTP credentials not configured, skipping email verification")
+            return True
+        
+        msg = MIMEMultipart()
+        msg['From'] = SMTP_USERNAME
+        msg['To'] = email
+        msg['Subject'] = "Park On - Email Verification"
+        
+        verification_link = f"https://park-finder-london.preview.emergentagent.com/verify?token={verification_token}"
+        
+        body = f"""
+        <html>
+        <body style="background-color: #000000; color: #ffffff; font-family: Inter, sans-serif;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h1 style="color: #d4af37; font-size: 2rem; margin: 0;">🅿️ Park On</h1>
+                    <p style="color: #888888; margin: 5px 0 0 0;">London</p>
+                </div>
+                
+                <div style="background: #111111; border: 1px solid #333333; border-radius: 16px; padding: 30px;">
+                    <h2 style="color: #ffffff; margin-bottom: 20px;">Welcome to Park On!</h2>
+                    <p style="color: #cccccc; margin-bottom: 30px;">Please verify your email address to complete your registration.</p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="{verification_link}" 
+                           style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); 
+                                  color: #000000; 
+                                  padding: 15px 30px; 
+                                  text-decoration: none; 
+                                  border-radius: 8px; 
+                                  font-weight: 700;">
+                            Verify Email Address
+                        </a>
+                    </div>
+                    
+                    <p style="color: #888888; font-size: 0.875rem; margin-top: 30px;">
+                        If you didn't create an account with Park On, please ignore this email.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        msg.attach(MIMEText(body, 'html'))
+        
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(SMTP_USERNAME, SMTP_PASSWORD)
+        text = msg.as_string()
+        server.sendmail(SMTP_USERNAME, email, text)
+        server.quit()
+        
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send verification email: {e}")
+        return False
 
 # TfL API Client
 class TfLClient:
@@ -292,6 +378,25 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     
     return User(**user_doc)
 
+async def get_current_user_optional(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))) -> Optional[User]:
+    """Get current user if authenticated, None otherwise"""
+    if not credentials:
+        return None
+    
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=["HS256"])
+        email: str = payload.get("sub")
+        if email is None:
+            return None
+    except jwt.PyJWTError:
+        return None
+    
+    user_doc = await db.users.find_one({"email": email})
+    if user_doc is None:
+        return None
+    
+    return User(**user_doc)
+
 def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Calculate distance between two points in kilometers"""
     import math
@@ -311,18 +416,23 @@ def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> fl
 # Authentication endpoints
 @api_router.post("/auth/register", response_model=APIResponse)
 async def register_user(user_data: UserCreate):
-    """Register a new user"""
+    """Register a new user with email verification"""
     # Check if user already exists
     existing_user = await db.users.find_one({"email": user_data.email})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Generate verification token
+    verification_token = str(uuid.uuid4())
     
     # Hash password and create user
     hashed_password = get_password_hash(user_data.password)
     user = User(
         email=user_data.email,
         full_name=user_data.full_name,
-        role=UserRole.FREE
+        role=UserRole.FREE,
+        is_verified=False,
+        verification_token=verification_token
     )
     
     user_dict = user.dict()
@@ -330,14 +440,31 @@ async def register_user(user_data: UserCreate):
     
     await db.users.insert_one(user_dict)
     
+    # Send verification email
+    await send_verification_email(user.email, verification_token)
+    
     # Create access token
     access_token = create_access_token(data={"sub": user.email})
     
     return APIResponse(
         success=True,
         data={"user": user, "access_token": access_token, "token_type": "bearer"},
-        message="User registered successfully"
+        message="User registered successfully. Please check your email for verification."
     )
+
+@api_router.get("/verify")
+async def verify_email(token: str):
+    """Verify user email address"""
+    user_doc = await db.users.find_one({"verification_token": token})
+    if not user_doc:
+        raise HTTPException(status_code=400, detail="Invalid verification token")
+    
+    await db.users.update_one(
+        {"verification_token": token},
+        {"$set": {"is_verified": True}, "$unset": {"verification_token": ""}}
+    )
+    
+    return {"message": "Email verified successfully"}
 
 @api_router.post("/auth/login", response_model=APIResponse)
 async def login_user(login_data: UserLogin):
@@ -379,25 +506,6 @@ async def create_guest_session():
     )
 
 # Parking search endpoints
-async def get_current_user_optional(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))) -> Optional[User]:
-    """Get current user if authenticated, None otherwise"""
-    if not credentials:
-        return None
-    
-    try:
-        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=["HS256"])
-        email: str = payload.get("sub")
-        if email is None:
-            return None
-    except jwt.PyJWTError:
-        return None
-    
-    user_doc = await db.users.find_one({"email": email})
-    if user_doc is None:
-        return None
-    
-    return User(**user_doc)
-
 @api_router.get("/parking/search", response_model=APIResponse)
 async def search_parking_spots(
     latitude: float = Query(..., ge=-90, le=90),
@@ -523,7 +631,7 @@ async def search_parking_spots(
 @api_router.get("/parking/spots/{spot_id}", response_model=APIResponse)
 async def get_parking_spot_details(
     spot_id: str = Path(...),
-    current_user: Optional[User] = Depends(get_current_user) if security else None
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get detailed information about a parking spot"""
     # Mock detailed spot information
@@ -547,6 +655,57 @@ async def get_parking_spot_details(
         success=True,
         data=spot_details,
         message="Spot details retrieved"
+    )
+
+# Parking History endpoints
+@api_router.get("/parking/history", response_model=APIResponse)
+async def get_parking_history(current_user: User = Depends(get_current_user)):
+    """Get parking history for premium users"""
+    if current_user.role != UserRole.PREMIUM:
+        raise HTTPException(
+            status_code=403, 
+            detail="Parking history feature requires Premium subscription"
+        )
+    
+    # Get user's parking history
+    history_cursor = db.parking_history.find({"user_id": current_user.id})
+    history = await history_cursor.to_list(length=None)
+    
+    # If no history exists, create some mock data
+    if not history:
+        mock_history = [
+            {
+                "user_id": current_user.id,
+                "spot_id": "tfl_tfl_cp_001",
+                "spot_name": "Westminster Station Car Park",
+                "start_time": datetime.utcnow() - timedelta(days=3),
+                "end_time": datetime.utcnow() - timedelta(days=3, hours=-3),
+                "duration_hours": 3.0,
+                "total_cost": 12.00,
+                "booking_reference": "PO" + str(uuid.uuid4())[:8].upper()
+            },
+            {
+                "user_id": current_user.id,
+                "spot_id": "jp_003",
+                "spot_name": "Hotel Parking - Covent Garden",
+                "start_time": datetime.utcnow() - timedelta(days=7),
+                "end_time": datetime.utcnow() - timedelta(days=7, hours=-5),
+                "duration_hours": 5.0,
+                "total_cost": 42.50,
+                "booking_reference": "PO" + str(uuid.uuid4())[:8].upper()
+            }
+        ]
+        
+        for item in mock_history:
+            history_item = ParkingHistoryItem(**item)
+            await db.parking_history.insert_one(history_item.dict())
+        
+        history = mock_history
+    
+    return APIResponse(
+        success=True,
+        data=[ParkingHistoryItem(**item) for item in history],
+        message="Parking history retrieved"
     )
 
 # Booking endpoints
@@ -578,6 +737,20 @@ async def create_booking(
     )
     
     await db.bookings.insert_one(booking.dict())
+    
+    # Add to parking history
+    history_item = ParkingHistoryItem(
+        user_id=current_user.id,
+        spot_id=booking_request.spot_id,
+        spot_name="Mock Parking Spot",  # Would fetch real name in production
+        start_time=booking_request.start_time,
+        end_time=booking_request.end_time,
+        duration_hours=duration_hours,
+        total_cost=total_cost,
+        booking_reference=booking.booking_reference
+    )
+    
+    await db.parking_history.insert_one(history_item.dict())
     
     return APIResponse(
         success=True,
@@ -612,6 +785,7 @@ async def get_subscription_plans():
                 "Advanced search filters",
                 "Best fare comparison",
                 "Parking reservations",
+                "Parking history tracking",
                 "Priority customer support"
             ]
         ),
@@ -625,6 +799,7 @@ async def get_subscription_plans():
                 "Advanced search filters", 
                 "Best fare comparison",
                 "Parking reservations",
+                "Parking history tracking",
                 "Priority customer support",
                 "20% savings vs monthly"
             ]
@@ -637,17 +812,14 @@ async def get_subscription_plans():
         message="Subscription plans retrieved"
     )
 
-class UpgradeRequest(BaseModel):
-    plan_name: str
-
 @api_router.post("/subscription/upgrade", response_model=APIResponse)
 async def upgrade_to_premium(
-    upgrade_request: UpgradeRequest,
+    plan_name: str = Query(..., description="Name of the subscription plan"),
     current_user: User = Depends(get_current_user)
 ):
     """Upgrade user to premium subscription"""
     # Mock payment processing
-    duration_days = 30 if "Monthly" in upgrade_request.plan_name else 365
+    duration_days = 30 if "Monthly" in plan_name else 365
     expires_at = datetime.utcnow() + timedelta(days=duration_days)
     
     await db.users.update_one(
@@ -712,6 +884,7 @@ async def startup_event():
     await db.users.create_index("email", unique=True)
     await db.bookings.create_index("user_id")
     await db.parking_cache.create_index("cached_at")
+    await db.parking_history.create_index("user_id")
     
     logger.info("Park On API ready!")
 

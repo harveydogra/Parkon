@@ -23,7 +23,7 @@ const Header = ({ user, onLogin, onLogout, onUpgrade }) => (
               Hello, {user.full_name || user.email}
             </span>
             <span className={`user-badge ${user.role}`}>
-              {user.role === 'premium' ? '⭐ Premium' : '🆓 Free'}
+              {user.role === 'premium' ? '⭐ Premium' : user.role === 'free' ? '🆓 Free' : '👤 Guest'}
             </span>
             {user.role !== 'premium' && (
               <button className="btn btn-upgrade" onClick={onUpgrade}>
@@ -83,7 +83,7 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
 
   return (
     <div className="search-section">
-      <h2>Find Parking in London</h2>
+      <h2>Find Premium Parking in London</h2>
       <form onSubmit={handleSubmit} className="search-form">
         <div className="search-row">
           <div className="input-group">
@@ -157,87 +157,155 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
         )}
         
         <button type="submit" className="btn btn-primary btn-search" disabled={isLoading}>
-          {isLoading ? 'Searching...' : 'Find Parking Spots'}
+          {isLoading ? 'Searching...' : 'Find Parking'}
         </button>
       </form>
     </div>
   );
 };
 
-const ParkingSpotCard = ({ spot, userRole, onBook, onViewDetails }) => (
-  <div className="parking-card">
-    <div className="card-header">
-      <h3 className="spot-name">{spot.name}</h3>
-      <div className="spot-badges">
-        <span className={`status-badge ${spot.status}`}>
-          {spot.status === 'available' ? '✅ Available' : '❌ Occupied'}
-        </span>
-        <span className="provider-badge">{spot.provider}</span>
-        {spot.is_real_time && (
-          <span className="realtime-badge">🔄 Real-time</span>
-        )}
-      </div>
-    </div>
-    
-    <div className="card-body">
-      <div className="location-info">
-        <p className="address">📍 {spot.location.address}</p>
-        <div className="distance-info">
-          <span>🚶 {spot.walk_time_mins} min walk</span>
-          <span>📏 {(spot.distance_km * 0.621371).toFixed(1)} miles away</span>
+const ParkingSpotCard = ({ spot, userRole, onBook, onViewDetails }) => {
+  // Add discount logic for some spots
+  const hasDiscount = Math.random() > 0.6; // 40% chance of discount
+  const discountPercent = hasDiscount ? Math.floor(Math.random() * 30) + 10 : 0; // 10-40% discount
+  const originalPrice = spot.pricing.hourly_rate;
+  const discountedPrice = hasDiscount ? originalPrice * (1 - discountPercent / 100) : originalPrice;
+
+  return (
+    <div className="parking-card">
+      <div className="card-header">
+        <h3 className="spot-name">{spot.name}</h3>
+        <div className="spot-badges">
+          <span className={`status-badge ${spot.status}`}>
+            {spot.status === 'available' ? '✅ Available' : '❌ Occupied'}
+          </span>
+          <span className="provider-badge">{spot.provider}</span>
+          {spot.is_real_time && (
+            <span className="realtime-badge">🔄 Real-time</span>
+          )}
+          {hasDiscount && (
+            <span className="discount-badge">🎉 {discountPercent}% OFF</span>
+          )}
         </div>
       </div>
       
-      <div className="pricing-info">
-        <div className="price-main">
-          <span className="price">£{spot.pricing.hourly_rate}</span>
-          <span className="price-unit">/hour</span>
+      <div className="card-body">
+        <div className="location-info">
+          <p className="address">📍 {spot.location.address}</p>
+          <div className="distance-info">
+            <span>🚶 {spot.walk_time_mins} min walk</span>
+            <span>📏 {(spot.distance_km * 0.621371).toFixed(1)} miles away</span>
+          </div>
         </div>
-        {spot.pricing.daily_rate && (
-          <div className="price-daily">
-            Daily: £{spot.pricing.daily_rate}
+        
+        <div className="pricing-info">
+          <div className="price-main">
+            {hasDiscount && (
+              <span className="original-price">£{originalPrice.toFixed(2)}</span>
+            )}
+            <span className={`price ${hasDiscount ? 'discounted' : ''}`}>
+              £{discountedPrice.toFixed(2)}
+            </span>
+            <span className="price-unit">/hour</span>
+          </div>
+          {spot.pricing.daily_rate && (
+            <div className="price-daily">
+              Daily: £{spot.pricing.daily_rate}
+            </div>
+          )}
+        </div>
+        
+        {spot.amenities && spot.amenities.length > 0 && (
+          <div className="amenities">
+            {spot.amenities.map((amenity, index) => (
+              <span key={index} className="amenity-tag">
+                {amenity}
+              </span>
+            ))}
           </div>
         )}
       </div>
       
-      {spot.amenities && spot.amenities.length > 0 && (
-        <div className="amenities">
-          {spot.amenities.map((amenity, index) => (
-            <span key={index} className="amenity-tag">
-              {amenity}
-            </span>
-          ))}
+      <div className="card-actions">
+        <button 
+          className="btn btn-secondary"
+          onClick={() => onViewDetails(spot)}
+        >
+          View Details
+        </button>
+        
+        {userRole === 'premium' ? (
+          <button 
+            className="btn btn-primary"
+            onClick={() => onBook(spot)}
+            disabled={spot.status !== 'available'}
+          >
+            Book Now
+          </button>
+        ) : (
+          <button 
+            className="btn btn-upgrade"
+            onClick={() => alert('Upgrade to Premium to book parking spots!')}
+          >
+            Upgrade to Book
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ParkingHistory = ({ userRole }) => {
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    if (userRole === 'premium') {
+      // Mock parking history for premium users
+      setHistory([
+        {
+          id: 1,
+          spotName: "Westminster Station Car Park",
+          date: "2025-09-12",
+          duration: "3 hours",
+          cost: "£12.00",
+          status: "completed"
+        },
+        {
+          id: 2,
+          spotName: "Covent Garden Hotel",
+          date: "2025-09-10",
+          duration: "5 hours",
+          cost: "£42.50",
+          status: "completed"
+        },
+        {
+          id: 3,
+          spotName: "King's Cross Station",
+          date: "2025-09-08",
+          duration: "2 hours",
+          cost: "£8.00",
+          status: "completed"
+        }
+      ]);
+    }
+  }, [userRole]);
+
+  if (userRole !== 'premium' || history.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="history-section">
+      <h3>⭐ Your Parking History</h3>
+      {history.map(item => (
+        <div key={item.id} className="history-item">
+          <h4>{item.spotName}</h4>
+          <p>{item.date} • {item.duration} • {item.cost}</p>
         </div>
-      )}
+      ))}
     </div>
-    
-    <div className="card-actions">
-      <button 
-        className="btn btn-secondary"
-        onClick={() => onViewDetails(spot)}
-      >
-        View Details
-      </button>
-      
-      {userRole === 'premium' ? (
-        <button 
-          className="btn btn-primary"
-          onClick={() => onBook(spot)}
-          disabled={spot.status !== 'available'}
-        >
-          Book Now
-        </button>
-      ) : (
-        <button 
-          className="btn btn-upgrade"
-          onClick={() => alert('Upgrade to Premium to book parking spots!')}
-        >
-          Upgrade to Book
-        </button>
-      )}
-    </div>
-  </div>
-);
+  );
+};
 
 const MapView = ({ spots, center }) => {
   useEffect(() => {
@@ -269,9 +337,20 @@ const MapView = ({ spots, center }) => {
       center: { lat: center.latitude, lng: center.longitude },
       styles: [
         {
-          featureType: 'poi',
-          elementType: 'labels',
+          elementType: 'geometry',
+          stylers: [{ color: '#212121' }]
+        },
+        {
+          elementType: 'labels.icon',
           stylers: [{ visibility: 'off' }]
+        },
+        {
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#757575' }]
+        },
+        {
+          elementType: 'labels.text.stroke',
+          stylers: [{ color: '#212121' }]
         }
       ]
     });
@@ -289,14 +368,14 @@ const MapView = ({ spots, center }) => {
           url: spot.status === 'available' ? 
             'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="14" fill="#10b981" stroke="#fff" stroke-width="2"/>
-                <text x="16" y="20" text-anchor="middle" fill="white" font-size="16">P</text>
+                <circle cx="16" cy="16" r="14" fill="#d4af37" stroke="#fff" stroke-width="2"/>
+                <text x="16" y="20" text-anchor="middle" fill="black" font-size="16" font-weight="bold">P</text>
               </svg>
             `) :
             'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="14" fill="#ef4444" stroke="#fff" stroke-width="2"/>
-                <text x="16" y="20" text-anchor="middle" fill="white" font-size="16">P</text>
+                <circle cx="16" cy="16" r="14" fill="#666666" stroke="#fff" stroke-width="2"/>
+                <text x="16" y="20" text-anchor="middle" fill="white" font-size="16" font-weight="bold">P</text>
               </svg>
             `),
           scaledSize: new window.google.maps.Size(32, 32)
@@ -305,11 +384,11 @@ const MapView = ({ spots, center }) => {
 
       const infoWindow = new window.google.maps.InfoWindow({
         content: `
-          <div style="padding: 10px;">
-            <h3 style="margin: 0 0 10px 0;">${spot.name}</h3>
+          <div style="padding: 10px; background: #111; color: #fff; border-radius: 8px;">
+            <h3 style="margin: 0 0 10px 0; color: #d4af37;">${spot.name}</h3>
             <p style="margin: 5px 0;"><strong>Price:</strong> £${spot.pricing.hourly_rate}/hour</p>
             <p style="margin: 5px 0;"><strong>Status:</strong> ${spot.status}</p>
-            <p style="margin: 5px 0;"><strong>Distance:</strong> ${spot.distance_km} km</p>
+            <p style="margin: 5px 0;"><strong>Distance:</strong> ${(spot.distance_km * 0.621371).toFixed(1)} miles</p>
           </div>
         `
       });
@@ -326,7 +405,7 @@ const MapView = ({ spots, center }) => {
       {GOOGLE_MAPS_API_KEY === 'placeholder-google-key' && (
         <div className="map-placeholder">
           <div className="map-placeholder-content">
-            <h3>Map View</h3>
+            <h3>Premium Map View</h3>
             <p>Google Maps integration requires API key</p>
             <p>Found {spots.length} parking spots in the area</p>
           </div>
@@ -358,6 +437,7 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
     full_name: ''
   });
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -378,9 +458,19 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
       const response = await axios.post(`${API}${endpoint}`, formData);
       
       if (response.data.success) {
-        localStorage.setItem('token', response.data.data.access_token);
-        localStorage.setItem('user', JSON.stringify(response.data.data.user));
-        window.location.reload();
+        if (!isLogin) {
+          // Show email verification message for registration
+          setEmailSent(true);
+          setTimeout(() => {
+            localStorage.setItem('token', response.data.data.access_token);
+            localStorage.setItem('user', JSON.stringify(response.data.data.user));
+            window.location.reload();
+          }, 2000);
+        } else {
+          localStorage.setItem('token', response.data.data.access_token);
+          localStorage.setItem('user', JSON.stringify(response.data.data.user));
+          window.location.reload();
+        }
       }
     } catch (error) {
       alert(error.response?.data?.detail || 'Authentication failed');
@@ -400,6 +490,12 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
         </div>
         
         <form onSubmit={handleSubmit} className="auth-form">
+          {emailSent && !isLogin && (
+            <div className="email-verification">
+              <p>✉️ Verification email sent! Please check your inbox.</p>
+            </div>
+          )}
+          
           {isGuest ? (
             <div className="guest-info">
               <p>As a guest, you can:</p>
@@ -414,6 +510,7 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
                 <li>Booking functionality</li>
                 <li>Advanced filters</li>
                 <li>Ad-free experience</li>
+                <li>Parking history</li>
               </ul>
             </div>
           ) : (
@@ -494,8 +591,8 @@ const UpgradeModal = ({ isOpen, onClose }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${API}/subscription/upgrade`,
-        { plan_name: plans[selectedPlan].name },
+        `${API}/subscription/upgrade?plan_name=${encodeURIComponent(plans[selectedPlan].name)}`,
+        {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -529,6 +626,7 @@ const UpgradeModal = ({ isOpen, onClose }) => {
               <li>🔍 Advanced search filters</li>
               <li>💰 Best fare comparison</li>
               <li>📅 Parking spot reservations</li>
+              <li>📊 Parking history tracking</li>
               <li>⭐ Priority customer support</li>
             </ul>
           </div>
@@ -556,7 +654,7 @@ const UpgradeModal = ({ isOpen, onClose }) => {
           </div>
           
           <button 
-            className="btn btn-primary btn-upgrade-action"
+            className="btn btn-upgrade btn-upgrade-action"
             onClick={handleUpgrade}
             disabled={loading}
           >
@@ -666,6 +764,8 @@ function App() {
           isLoading={loading}
           userRole={user?.role}
         />
+        
+        <ParkingHistory userRole={user?.role} />
         
         <div className="content-grid">
           <div className="results-section">

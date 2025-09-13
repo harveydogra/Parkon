@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
   box-sizing: border-box;
@@ -9,8 +9,8 @@
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
-  color: #1f2937;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #ffffff;
+  background: #000000;
   min-height: 100vh;
 }
 
@@ -18,17 +18,19 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #000000;
 }
 
-/* Header Styles */
+/* Header Styles - Premium Black & Gold */
 .header {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  background: #000000;
   color: white;
   padding: 1rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid #d4af37;
 }
 
 .header-content {
@@ -48,7 +50,7 @@ body {
 
 .logo-icon {
   font-size: 2rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -56,16 +58,17 @@ body {
 
 .logo-text {
   font-size: 1.75rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  font-weight: 900;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -0.5px;
 }
 
 .logo-subtitle {
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: #888888;
   font-weight: 500;
 }
 
@@ -83,7 +86,7 @@ body {
 
 .user-welcome {
   font-weight: 500;
-  color: #e2e8f0;
+  color: #e5e5e5;
 }
 
 .user-badge {
@@ -94,18 +97,18 @@ body {
 }
 
 .user-badge.premium {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: #92400e;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  color: #000000;
 }
 
 .user-badge.free {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-  color: #f9fafb;
+  background: linear-gradient(135deg, #333333 0%, #555555 100%);
+  color: #ffffff;
 }
 
 .user-badge.guest {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  color: #f3f4f6;
+  background: linear-gradient(135deg, #666666 0%, #888888 100%);
+  color: #ffffff;
 }
 
 .auth-buttons {
@@ -113,9 +116,9 @@ body {
   gap: 0.75rem;
 }
 
-/* Button Styles */
+/* Button Styles - Uber-like */
 .btn {
-  padding: 0.625rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -124,53 +127,81 @@ body {
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   text-decoration: none;
+  font-family: 'Inter', sans-serif;
 }
 
 .btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #ffffff;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-  color: white;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #333333;
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  background: #333333;
+  border-color: #555555;
 }
 
 .btn-upgrade {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  color: #000000;
+  border: none;
+  font-weight: 700;
 }
 
 .btn-upgrade:hover {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  background: linear-gradient(135deg, #f4d03f 0%, #d4af37 100%);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
 .btn-location {
-  padding: 0.5rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
-  border-radius: 0.375rem;
+  padding: 0.75rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 0.5rem;
+  border: 2px solid #ffffff;
 }
 
+.btn-location:hover {
+  background: #f5f5f5;
+}
+
+/* Uber-style Search Button */
 .btn-search {
-  padding: 0.875rem 2rem;
+  padding: 1rem 2rem;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 800;
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-search:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
 }
 
 /* Main Content */
@@ -180,12 +211,13 @@ body {
   margin: 0 auto;
   padding: 2rem;
   width: 100%;
+  background: #000000;
 }
 
-/* Ad Banner */
+/* Ad Banner - Premium Gold */
 .ad-banner {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border: 2px solid #f59e0b;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 2px solid #d4af37;
   border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -193,30 +225,31 @@ body {
 }
 
 .ad-content h3 {
-  color: #92400e;
+  color: #d4af37;
   margin-bottom: 0.5rem;
   font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .ad-content p {
-  color: #b45309;
+  color: #cccccc;
   margin-bottom: 1rem;
 }
 
-/* Search Section */
+/* Search Section - Dark Theme */
 .search-section {
-  background: white;
+  background: #111111;
   border-radius: 1rem;
   padding: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 25px rgba(212, 175, 55, 0.1);
+  border: 1px solid #333333;
 }
 
 .search-section h2 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -241,24 +274,29 @@ body {
 
 .input-group label {
   font-weight: 600;
-  color: #374151;
+  color: #cccccc;
   font-size: 0.875rem;
 }
 
 .input {
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #333333;
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: all 0.2s ease;
-  background: #fafafa;
+  background: #1a1a1a;
+  color: #ffffff;
 }
 
 .input:focus {
   outline: none;
-  border-color: #10b981;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  border-color: #d4af37;
+  background: #222222;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.input::placeholder {
+  color: #666666;
 }
 
 .location-input {
@@ -271,8 +309,8 @@ body {
 }
 
 .premium-filters {
-  background: linear-gradient(135deg, #fef9e7 0%, #fef3c7 100%);
-  border: 2px solid #f59e0b;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 2px solid #d4af37;
   border-radius: 0.75rem;
   padding: 1.5rem;
   position: relative;
@@ -282,8 +320,8 @@ body {
   position: absolute;
   top: -0.75rem;
   left: 1rem;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  color: #000000;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
@@ -299,11 +337,11 @@ body {
 
 /* Results Section */
 .results-section {
-  background: white;
+  background: #111111;
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333333;
 }
 
 .results-header {
@@ -312,22 +350,22 @@ body {
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #f3f4f6;
+  border-bottom: 2px solid #333333;
 }
 
 .results-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
 }
 
 .upgrade-hint {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  color: #92400e;
-  border: 1px solid #f59e0b;
+  color: #d4af37;
+  border: 1px solid #d4af37;
 }
 
 .parking-grid {
@@ -336,10 +374,10 @@ body {
   gap: 1rem;
 }
 
-/* Parking Card */
+/* Parking Card - Premium Dark Design */
 .parking-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
+  border: 2px solid #333333;
   border-radius: 1rem;
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -354,13 +392,13 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
+  background: linear-gradient(90deg, #d4af37, #ffffff, #d4af37);
 }
 
 .parking-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-  border-color: #10b981;
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.2);
+  border-color: #d4af37;
 }
 
 .card-header {
@@ -373,7 +411,7 @@ body {
 .spot-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -384,7 +422,7 @@ body {
   align-items: flex-end;
 }
 
-.status-badge, .provider-badge, .realtime-badge {
+.status-badge, .provider-badge, .realtime-badge, .discount-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
@@ -392,23 +430,29 @@ body {
 }
 
 .status-badge.available {
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-  color: #065f46;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
 }
 
 .status-badge.occupied {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: #991b1b;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
 }
 
 .provider-badge {
-  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-  color: #3730a3;
+  background: linear-gradient(135deg, #333333 0%, #555555 100%);
+  color: #ffffff;
 }
 
 .realtime-badge {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: #92400e;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  color: #000000;
+}
+
+.discount-badge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .card-body {
@@ -421,7 +465,7 @@ body {
 
 .address {
   font-weight: 500;
-  color: #4b5563;
+  color: #cccccc;
   margin-bottom: 0.5rem;
 }
 
@@ -429,7 +473,7 @@ body {
   display: flex;
   gap: 1rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #888888;
 }
 
 .pricing-info {
@@ -448,18 +492,29 @@ body {
 .price {
   font-size: 1.75rem;
   font-weight: 800;
+  color: #ffffff;
+}
+
+.price.discounted {
   color: #10b981;
 }
 
 .price-unit {
   font-size: 1rem;
-  color: #6b7280;
+  color: #888888;
   font-weight: 500;
 }
 
 .price-daily {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #888888;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #666666;
+  font-size: 1rem;
+  margin-right: 0.5rem;
 }
 
 .amenities {
@@ -469,13 +524,13 @@ body {
 }
 
 .amenity-tag {
-  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-  color: #4b5563;
+  background: linear-gradient(135deg, #333333 0%, #555555 100%);
+  color: #ffffff;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 500;
-  border: 1px solid #d1d5db;
+  border: 1px solid #666666;
 }
 
 .card-actions {
@@ -490,11 +545,11 @@ body {
 
 /* Map Section */
 .map-section {
-  background: white;
+  background: #111111;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333333;
   height: fit-content;
   position: sticky;
   top: 6rem;
@@ -509,36 +564,72 @@ body {
 .map {
   width: 100%;
   height: 100%;
+  filter: invert(90%) hue-rotate(180deg);
 }
 
 .map-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed #666666;
 }
 
 .map-placeholder-content {
   text-align: center;
-  color: #64748b;
+  color: #cccccc;
 }
 
 .map-placeholder-content h3 {
   margin-bottom: 0.5rem;
-  color: #475569;
+  color: #ffffff;
 }
 
-/* Modal Styles */
+/* Parking History Section */
+.history-section {
+  background: #111111;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #333333;
+}
+
+.history-section h3 {
+  color: #d4af37;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.history-item {
+  background: #1a1a1a;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #d4af37;
+}
+
+.history-item h4 {
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.history-item p {
+  color: #888888;
+  font-size: 0.875rem;
+}
+
+/* Modal Styles - Dark Theme */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -547,14 +638,15 @@ body {
 }
 
 .modal {
-  background: white;
+  background: #111111;
   border-radius: 1rem;
   padding: 0;
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333333;
 }
 
 .modal-header {
@@ -562,14 +654,14 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 2px solid #f3f4f6;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 2px solid #333333;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
 }
 
 .modal-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -577,7 +669,7 @@ body {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #6b7280;
+  color: #888888;
   cursor: pointer;
   padding: 0.25rem;
   border-radius: 0.25rem;
@@ -585,8 +677,8 @@ body {
 }
 
 .close-btn:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: #333333;
+  color: #ffffff;
 }
 
 .auth-form {
@@ -597,36 +689,50 @@ body {
 }
 
 .guest-info {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 1.5rem;
   border-radius: 0.75rem;
-  border: 2px solid #0ea5e9;
+  border: 2px solid #d4af37;
 }
 
 .guest-info p {
   margin-bottom: 1rem;
-  color: #0c4a6e;
+  color: #cccccc;
 }
 
 .guest-info ul {
   margin-left: 1.5rem;
   margin-bottom: 1rem;
-  color: #0369a1;
+  color: #cccccc;
 }
 
 .auth-switch {
   text-align: center;
-  color: #6b7280;
+  color: #888888;
   font-size: 0.875rem;
 }
 
 .link-btn {
   background: none;
   border: none;
-  color: #10b981;
+  color: #d4af37;
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
+}
+
+.email-verification {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d4af37;
+  margin-top: 1rem;
+}
+
+.email-verification p {
+  color: #d4af37;
+  font-size: 0.875rem;
+  text-align: center;
 }
 
 /* Upgrade Modal */
@@ -639,15 +745,15 @@ body {
 }
 
 .premium-features {
-  background: linear-gradient(135deg, #fef9e7 0%, #fef3c7 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 1.5rem;
   border-radius: 0.75rem;
   margin-bottom: 2rem;
-  border: 2px solid #f59e0b;
+  border: 2px solid #d4af37;
 }
 
 .premium-features h3 {
-  color: #92400e;
+  color: #d4af37;
   margin-bottom: 1rem;
   font-size: 1.25rem;
 }
@@ -659,9 +765,9 @@ body {
 
 .premium-features li {
   padding: 0.5rem 0;
-  color: #b45309;
+  color: #cccccc;
   font-weight: 500;
-  border-bottom: 1px solid #fde68a;
+  border-bottom: 1px solid #333333;
 }
 
 .premium-features li:last-child {
@@ -676,24 +782,24 @@ body {
 }
 
 .plan-card {
-  border: 2px solid #e5e7eb;
+  border: 2px solid #333333;
   border-radius: 1rem;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
 }
 
 .plan-card:hover {
-  border-color: #10b981;
+  border-color: #d4af37;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
 }
 
 .plan-card.selected {
-  border-color: #10b981;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #d4af37;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
 }
 
 .popular-badge {
@@ -701,8 +807,8 @@ body {
   top: -0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  color: #000000;
   padding: 0.25rem 1rem;
   border-radius: 1rem;
   font-size: 0.75rem;
@@ -712,25 +818,25 @@ body {
 .plan-card h4 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
 .price {
   font-size: 2rem;
   font-weight: 800;
-  color: #10b981;
+  color: #d4af37;
 }
 
 .price span {
   font-size: 1rem;
-  color: #6b7280;
+  color: #888888;
   font-weight: 500;
 }
 
 .savings {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
@@ -740,7 +846,7 @@ body {
 }
 
 .plan-card p {
-  color: #6b7280;
+  color: #888888;
   font-size: 0.875rem;
 }
 
@@ -755,11 +861,11 @@ body {
 .no-results {
   text-align: center;
   padding: 3rem;
-  color: #6b7280;
+  color: #888888;
 }
 
 .no-results h3 {
-  color: #374151;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
@@ -809,14 +915,6 @@ body {
   .card-actions {
     flex-direction: column;
   }
-}
-
-@media (max-width: 480px) {
-  .logo {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-  }
 
   .logo-text {
     font-size: 1.5rem;
@@ -837,6 +935,14 @@ body {
 
   .spot-badges {
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   .modal {
@@ -861,24 +967,37 @@ body {
 .btn:focus,
 .input:focus,
 .plan-card:focus {
-  outline: 2px solid #10b981;
+  outline: 2px solid #d4af37;
   outline-offset: 2px;
 }
 
-/* Smooth Transitions */
-* {
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-/* Gradient Animation */
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.loading {
+  animation: pulse 2s infinite;
 }
 
-.btn-primary,
-.btn-upgrade {
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
+/* Success Messages */
+.success-message {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+.error-message {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  text-align: center;
+  font-weight: 600;
 }
