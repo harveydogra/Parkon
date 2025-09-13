@@ -1,0 +1,35 @@
+{
+  "short_name": "Park On",
+  "name": "Park On - Smart Parking App",
+  "description": "Find and book parking spaces with real-time availability",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#d4af37",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "categories": ["navigation", "travel", "utilities"],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "type": "image/png",
+      "sizes": "1242x2208"
+    }
+  ]
+}
