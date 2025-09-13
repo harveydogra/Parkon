@@ -304,8 +304,8 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
           </div>
         )}
         
-        <button type="submit" className="btn btn-primary btn-search" disabled={isLoading}>
-          {isLoading ? 'Searching...' : 'Find Parking'}
+        <button type="submit" className="btn btn-primary btn-search" disabled={isLoading || geocoding}>
+          {geocoding ? 'Finding Location...' : isLoading ? 'Searching...' : 'Find Parking'}
         </button>
       </form>
     </div>
