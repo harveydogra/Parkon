@@ -348,8 +348,9 @@ class TfLClient:
         return parking_spots
     
     def _get_mock_tfl_data(self) -> List[Dict[str, Any]]:
-        """Mock TfL car park data for demonstration"""
+        """Mock TfL car park data with comprehensive London coverage"""
         return [
+            # Central London
             {
                 "id": "tfl_cp_001",
                 "name": "Westminster Station Car Park",
@@ -375,6 +376,95 @@ class TfLClient:
                 "spacesAvailable": 12,
                 "lat": 51.5049,
                 "lon": -0.0863,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            
+            # Southwest London
+            {
+                "id": "tfl_cp_004",
+                "name": "Clapham Common Station Car Park",
+                "bayCount": 80,
+                "spacesAvailable": 35,
+                "lat": 51.4615,
+                "lon": -0.1384,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            {
+                "id": "tfl_cp_005",
+                "name": "Wimbledon Station Car Park",
+                "bayCount": 120,
+                "spacesAvailable": 45,
+                "lat": 51.4214,
+                "lon": -0.2044,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            
+            # North London
+            {
+                "id": "tfl_cp_006",
+                "name": "Finchley Road Station Car Park",
+                "bayCount": 90,
+                "spacesAvailable": 22,
+                "lat": 51.5499,
+                "lon": -0.1806,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            {
+                "id": "tfl_cp_007",
+                "name": "Camden Town Station Car Park",
+                "bayCount": 60,
+                "spacesAvailable": 15,
+                "lat": 51.5390,
+                "lon": -0.1426,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            
+            # Southeast London
+            {
+                "id": "tfl_cp_008",
+                "name": "New Cross Gate Station Car Park",
+                "bayCount": 70,
+                "spacesAvailable": 28,
+                "lat": 51.4756,
+                "lon": -0.0404,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            {
+                "id": "tfl_cp_009",
+                "name": "Greenwich Station Car Park",
+                "bayCount": 85,
+                "spacesAvailable": 40,
+                "lat": 51.4781,
+                "lon": 0.0065,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            
+            # Outer London
+            {
+                "id": "tfl_cp_010",
+                "name": "Ilford Station Car Park",
+                "bayCount": 110,
+                "spacesAvailable": 55,
+                "lat": 51.5588,
+                "lon": 0.0683,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            {
+                "id": "tfl_cp_011",
+                "name": "Richmond Station Car Park",
+                "bayCount": 95,
+                "spacesAvailable": 30,
+                "lat": 51.4634,
+                "lon": -0.3019,
+                "lastUpdated": datetime.utcnow().isoformat()
+            },
+            {
+                "id": "tfl_cp_012",
+                "name": "Croydon East Station Car Park",
+                "bayCount": 130,
+                "spacesAvailable": 65,
+                "lat": 51.3714,
+                "lon": -0.0977,
                 "lastUpdated": datetime.utcnow().isoformat()
             }
         ]
