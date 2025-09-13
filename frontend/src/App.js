@@ -343,6 +343,7 @@ const AdBanner = ({ userRole, onUpgrade }) => {
     <div className="ad-banner">
       <div className="ad-content">
         <h3>Upgrade Now</h3>
+        <p>Real-time availability, booking functionality, advanced filters, ad-free experience, and best fare comparison.</p>
         <button className="btn btn-upgrade" onClick={onUpgrade}>Upgrade Now</button>
       </div>
     </div>
