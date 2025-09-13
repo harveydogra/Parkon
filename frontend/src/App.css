@@ -251,45 +251,53 @@ body {
   margin: 0 auto;
   padding: 2rem;
   width: 100%;
-  background: #000000;
+  background: var(--bg-primary);
 }
 
-/* Ad Banner - Premium Gold */
+/* Ad Banner - Premium Gold with Adaptive Background */
 .ad-banner {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  border: 2px solid #d4af37;
+  background: var(--bg-secondary);
+  border: 2px solid var(--gold-primary);
   border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 2rem;
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .ad-content h3 {
-  color: #d4af37;
+  color: var(--gold-primary);
   margin-bottom: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
 }
 
 .ad-content p {
-  color: #cccccc;
+  color: var(--text-secondary);
   margin-bottom: 1rem;
 }
 
-/* Search Section - Dark Theme */
+/* Search Section - Adaptive Theme */
 .search-section {
-  background: #111111;
+  background: var(--bg-secondary);
   border-radius: 1rem;
   padding: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 25px rgba(212, 175, 55, 0.1);
-  border: 1px solid #333333;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-section {
+    box-shadow: 0 4px 25px rgba(212, 175, 55, 0.1);
+  }
 }
 
 .search-section h2 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -314,29 +322,29 @@ body {
 
 .input-group label {
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
 .input {
   padding: 0.75rem 1rem;
-  border: 2px solid #333333;
+  border: 2px solid var(--border-primary);
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: all 0.2s ease;
-  background: #1a1a1a;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .input:focus {
   outline: none;
-  border-color: #d4af37;
-  background: #222222;
+  border-color: var(--gold-primary);
+  background: var(--bg-primary);
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 .input::placeholder {
-  color: #666666;
+  color: var(--text-tertiary);
 }
 
 .location-input {
@@ -349,19 +357,20 @@ body {
 }
 
 .premium-filters {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  border: 2px solid #d4af37;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--gold-primary);
   border-radius: 0.75rem;
   padding: 1.5rem;
   position: relative;
+  transition: background-color 0.3s ease;
 }
 
 .premium-badge {
   position: absolute;
   top: -0.75rem;
   left: 1rem;
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  color: #000000;
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-secondary) 100%);
+  color: var(--bg-primary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
