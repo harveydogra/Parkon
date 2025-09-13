@@ -379,6 +379,25 @@ async def create_guest_session():
     )
 
 # Parking search endpoints
+async def get_current_user_optional(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))) -> Optional[User]:
+    """Get current user if authenticated, None otherwise"""
+    if not credentials:
+        return None
+    
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=["HS256"])
+        email: str = payload.get("sub")
+        if email is None:
+            return None
+    except jwt.PyJWTError:
+        return None
+    
+    user_doc = await db.users.find_one({"email": email})
+    if user_doc is None:
+        return None
+    
+    return User(**user_doc)
+
 @api_router.get("/parking/search", response_model=APIResponse)
 async def search_parking_spots(
     latitude: float = Query(..., ge=-90, le=90),
@@ -386,7 +405,7 @@ async def search_parking_spots(
     radius_km: float = Query(2.0, ge=0.1, le=10.0),
     spot_type: Optional[ParkingSpotType] = Query(None),
     max_price: Optional[float] = Query(None, ge=0),
-    current_user: Optional[User] = Depends(get_current_user) if security else None
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Search for parking spots near location"""
     try:
