@@ -610,14 +610,21 @@ body {
 
 /* Map Section */
 .map-section {
-  background: #111111;
+  background: var(--bg-secondary);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid #333333;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-primary);
   height: fit-content;
   position: sticky;
   top: 6rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .map-section {
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .map-container {
@@ -629,61 +636,69 @@ body {
 .map {
   width: 100%;
   height: 100%;
-  filter: invert(90%) hue-rotate(180deg);
+}
+
+@media (prefers-color-scheme: dark) {
+  .map {
+    filter: invert(90%) hue-rotate(180deg);
+  }
 }
 
 .map-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+  background: var(--bg-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #666666;
+  border: 2px dashed var(--border-secondary);
+  transition: background-color 0.3s ease;
 }
 
 .map-placeholder-content {
   text-align: center;
-  color: #cccccc;
+  color: var(--text-secondary);
 }
 
 .map-placeholder-content h3 {
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 /* Parking History Section */
 .history-section {
-  background: #111111;
+  background: var(--bg-secondary);
   border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  border: 1px solid #333333;
+  border: 1px solid var(--border-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .history-section h3 {
-  color: #d4af37;
+  color: var(--gold-primary);
   margin-bottom: 1rem;
   font-size: 1.25rem;
   font-weight: 700;
 }
 
 .history-item {
-  background: #1a1a1a;
+  background: var(--bg-tertiary);
   padding: 1rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
-  border-left: 4px solid #d4af37;
+  border-left: 4px solid var(--gold-primary);
+  transition: background-color 0.3s ease;
 }
 
 .history-item h4 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .history-item p {
-  color: #888888;
+  color: var(--text-tertiary);
   font-size: 0.875rem;
 }
 
