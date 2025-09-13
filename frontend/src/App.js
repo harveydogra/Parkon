@@ -165,9 +165,47 @@ const SearchForm = ({ onSearch, isLoading, userRole }) => {
     spot_type: '',
     max_price: ''
   });
+  
+  const [locationInput, setLocationInput] = useState('');
+  const [geocoding, setGeocoding] = useState(false);
 
-  const handleSubmit = (e) => {
+  const geocodeLocation = async (address) => {
+    if (!address.trim()) return false;
+    
+    setGeocoding(true);
+    try {
+      const response = await axios.get(`${API}/geocode`, { 
+        params: { q: address }
+      });
+      
+      if (response.data.success) {
+        const { latitude, longitude } = response.data.data;
+        setSearchData({
+          ...searchData,
+          latitude,
+          longitude
+        });
+        return true;
+      }
+    } catch (error) {
+      console.error('Geocoding failed:', error);
+      alert('Could not find location. Please check the address or postcode.');
+      return false;
+    } finally {
+      setGeocoding(false);
+    }
+    return false;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // If user entered a location, geocode it first
+    if (locationInput.trim()) {
+      const geocoded = await geocodeLocation(locationInput);
+      if (!geocoded) return; // Don't search if geocoding failed
+    }
+    
     onSearch(searchData);
   };
 
