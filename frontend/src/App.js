@@ -503,7 +503,7 @@ const AdBanner = ({ userRole, onUpgrade }) => {
   );
 };
 
-const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
+const LoginModal = ({ isOpen, onClose, isGuest = false, onUserLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
@@ -527,8 +527,8 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
           full_name: 'Guest User'
         };
         localStorage.setItem('user', JSON.stringify(guestUser));
-        setUser(guestUser);
-        setShowLoginModal(false);
+        onUserLogin(guestUser);
+        onClose();
         return;
       }
 
@@ -542,12 +542,14 @@ const LoginModal = ({ isOpen, onClose, isGuest = false }) => {
           setTimeout(() => {
             localStorage.setItem('token', response.data.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data.data.user));
-            window.location.reload();
+            onUserLogin(response.data.data.user);
+            onClose();
           }, 2000);
         } else {
           localStorage.setItem('token', response.data.data.access_token);
           localStorage.setItem('user', JSON.stringify(response.data.data.user));
-          window.location.reload();
+          onUserLogin(response.data.data.user);
+          onClose();
         }
       }
     } catch (error) {
