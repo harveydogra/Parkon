@@ -103,7 +103,6 @@ const Header = ({ user, onLogin, onLogout, onUpgrade, onToggleSidebar }) => (
         <div className="logo">
           <span className="logo-icon">🅿️</span>
           <span className="logo-text">Park On</span>
-          <span className="logo-subtitle">London</span>
         </div>
       </div>
       
