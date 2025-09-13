@@ -650,12 +650,36 @@ async def search_parking_spots(
     latitude: float = Query(..., ge=-90, le=90),
     longitude: float = Query(..., ge=-180, le=180),
     radius_miles: float = Query(1.2, ge=0.1, le=10.0, description="Search radius in miles"),
-    spot_type: Optional[ParkingSpotType] = Query(None),
-    max_price: Optional[float] = Query(None, ge=0),
+    spot_type: Optional[str] = Query(None),
+    max_price: Optional[str] = Query(None),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Search for parking spots near location"""
     try:
+        # Handle empty string parameters from mobile apps
+        if spot_type == "":
+            spot_type = None
+        if max_price == "":
+            max_price = None
+            
+        # Validate spot_type if provided
+        parsed_spot_type = None
+        if spot_type:
+            try:
+                parsed_spot_type = ParkingSpotType(spot_type)
+            except ValueError:
+                raise HTTPException(status_code=422, detail=f"Invalid spot_type: {spot_type}")
+        
+        # Validate max_price if provided
+        parsed_max_price = None
+        if max_price:
+            try:
+                parsed_max_price = float(max_price)
+                if parsed_max_price < 0:
+                    raise HTTPException(status_code=422, detail="max_price must be non-negative")
+            except ValueError:
+                raise HTTPException(status_code=422, detail=f"Invalid max_price: {max_price}")
+        
         # Convert miles to kilometers for internal calculations
         radius_km = radius_miles * 1.60934
         
@@ -736,11 +760,11 @@ async def search_parking_spots(
                 all_spots.append(spot)
         
         # Apply filters
-        if spot_type:
-            all_spots = [spot for spot in all_spots if spot.spot_type == spot_type]
+        if parsed_spot_type:
+            all_spots = [spot for spot in all_spots if spot.spot_type == parsed_spot_type]
         
-        if max_price:
-            all_spots = [spot for spot in all_spots if spot.pricing.hourly_rate <= max_price]
+        if parsed_max_price:
+            all_spots = [spot for spot in all_spots if spot.pricing.hourly_rate <= parsed_max_price]
         
         # Sort by distance
         all_spots.sort(key=lambda x: x.distance_km or 0)
@@ -763,6 +787,8 @@ async def search_parking_spots(
             message=f"Found {len(all_spots)} parking spots"
         )
         
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Search error: {e}")
         raise HTTPException(status_code=500, detail="Search failed")
