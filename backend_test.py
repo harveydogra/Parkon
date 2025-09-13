@@ -410,7 +410,8 @@ class ParkOnAPITester:
 
 def main():
     print("🚗 Park On London - API Testing Suite")
-    print("=" * 50)
+    print("🎯 Focus: Postcode Search Functionality Testing")
+    print("=" * 60)
     
     tester = ParkOnAPITester()
     
@@ -421,12 +422,35 @@ def main():
     test_results.append(("Health Check", tester.test_health_check()))
     test_results.append(("Guest Session", tester.test_guest_session()))
     
+    # CORS and Headers Testing
+    test_results.append(("CORS Headers", tester.test_cors_headers()))
+    
+    # Postcode Geocoding Tests (PRIORITY)
+    print("\n" + "🎯" * 20 + " POSTCODE GEOCODING TESTS " + "🎯" * 20)
+    test_results.append(("Geocode E14 4QA (Uppercase)", tester.test_geocode_postcode_uppercase()))
+    test_results.append(("Geocode e14 4qa (Lowercase)", tester.test_geocode_postcode_lowercase()))
+    test_results.append(("Geocode E14 4qa (Mixed Case)", tester.test_geocode_postcode_mixed_case()))
+    test_results.append(("Geocode Invalid Postcode", tester.test_geocode_invalid_postcode()))
+    test_results.append(("Geocode Missing Parameter", tester.test_geocode_missing_parameter()))
+    
+    # Parking Search Tests (PRIORITY)
+    print("\n" + "🎯" * 20 + " PARKING SEARCH TESTS " + "🎯" * 20)
+    test_results.append(("Parking Search E14 Coordinates", tester.test_parking_search_with_e14_coordinates()))
+    test_results.append(("Complete Postcode Search Flow", tester.test_complete_postcode_search_flow()))
+    test_results.append(("Parameter Validation (422 Errors)", tester.test_parking_search_parameter_validation()))
+    
+    # Authentication Tests
+    test_results.append(("Without Auth Headers", tester.test_without_auth_headers()))
+    
+    # TfL Integration Test
+    test_results.append(("TfL API Integration", tester.test_tfl_api_integration()))
+    
     # Authentication flow
     test_results.append(("User Registration", tester.test_user_registration()))
     test_results.append(("User Login", tester.test_user_login()))
     test_results.append(("Get Current User", tester.test_get_current_user()))
     
-    # Parking search
+    # Standard parking search tests
     test_results.append(("Parking Search", tester.test_parking_search()))
     test_results.append(("Parking Search with Filters", tester.test_parking_search_with_filters()))
     test_results.append(("Parking Spot Details", tester.test_parking_spot_details()))
@@ -443,21 +467,41 @@ def main():
     test_results.append(("Popular Spots Analytics", tester.test_analytics_popular_spots()))
     
     # Print summary
-    print("\n" + "=" * 50)
+    print("\n" + "=" * 60)
     print("📊 TEST SUMMARY")
-    print("=" * 50)
+    print("=" * 60)
     
     failed_tests = []
+    critical_failed = []
+    
+    # Define critical tests for postcode functionality
+    critical_tests = [
+        "Geocode E14 4QA (Uppercase)",
+        "Geocode e14 4qa (Lowercase)", 
+        "Geocode E14 4qa (Mixed Case)",
+        "Parking Search E14 Coordinates",
+        "Complete Postcode Search Flow",
+        "TfL API Integration"
+    ]
+    
     for test_name, success in test_results:
         status = "✅ PASS" if success else "❌ FAIL"
-        print(f"{status} {test_name}")
+        priority = "🔥 CRITICAL" if test_name in critical_tests and not success else ""
+        print(f"{status} {test_name} {priority}")
         if not success:
             failed_tests.append(test_name)
+            if test_name in critical_tests:
+                critical_failed.append(test_name)
     
     print(f"\nTests passed: {tester.tests_passed}/{tester.tests_run}")
     
+    if critical_failed:
+        print(f"\n🔥 CRITICAL FAILURES (Postcode Search Issues):")
+        for test in critical_failed:
+            print(f"   - {test}")
+    
     if failed_tests:
-        print(f"\n❌ Failed tests:")
+        print(f"\n❌ All failed tests:")
         for test in failed_tests:
             print(f"   - {test}")
         return 1
