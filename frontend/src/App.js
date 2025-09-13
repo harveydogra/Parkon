@@ -184,7 +184,7 @@ const ParkingSpotCard = ({ spot, userRole, onBook, onViewDetails }) => (
         <p className="address">📍 {spot.location.address}</p>
         <div className="distance-info">
           <span>🚶 {spot.walk_time_mins} min walk</span>
-          <span>📏 {spot.distance_km} km away</span>
+          <span>📏 {(spot.distance_km * 0.621371).toFixed(1)} miles away</span>
         </div>
       </div>
       
