@@ -848,7 +848,7 @@ body {
   justify-content: center;
 }
 
-/* Map Section */
+/* Map Section - OpenStreetMap + Leaflet */
 .map-section {
   background: var(--bg-secondary);
   border-radius: 1rem;
@@ -876,33 +876,49 @@ body {
 .map {
   width: 100%;
   height: 100%;
+  border-radius: 1rem;
 }
 
+/* Dark mode map styling */
 @media (prefers-color-scheme: dark) {
-  .map {
-    filter: invert(90%) hue-rotate(180deg);
+  .leaflet-container {
+    filter: invert(100%) hue-rotate(180deg) brightness(0.9) contrast(1.1);
+  }
+  
+  .leaflet-popup-content-wrapper {
+    filter: invert(100%) hue-rotate(180deg);
+    background: var(--bg-primary) !important;
+  }
+  
+  .custom-parking-icon {
+    filter: invert(100%) hue-rotate(180deg);
   }
 }
 
-.map-placeholder {
-  width: 100%;
-  height: 100%;
-  background: var(--bg-tertiary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed var(--border-secondary);
-  transition: background-color 0.3s ease;
+/* Map popup styling */
+.map-popup {
+  background: var(--bg-primary);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  min-width: 200px;
 }
 
-.map-placeholder-content {
-  text-align: center;
-  color: var(--text-secondary);
+/* Leaflet popup customization */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.75rem !important;
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-primary) !important;
 }
 
-.map-placeholder-content h3 {
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
+.leaflet-popup-tip {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+/* Custom parking icon container */
+.custom-parking-icon {
+  border: none !important;
+  background: transparent !important;
 }
 
 /* Parking History Section */
