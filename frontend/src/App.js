@@ -336,7 +336,7 @@ const MapView = ({ spots, center }) => {
   );
 };
 
-const AdBanner = ({ userRole }) => {
+const AdBanner = ({ userRole, onUpgrade }) => {
   if (userRole === 'premium') return null;
 
   return (
@@ -344,7 +344,7 @@ const AdBanner = ({ userRole }) => {
       <div className="ad-content">
         <h3>🚗 Premium Parking App</h3>
         <p>Upgrade to Premium for ad-free experience and exclusive features!</p>
-        <button className="btn btn-upgrade">Upgrade Now</button>
+        <button className="btn btn-upgrade" onClick={onUpgrade}>Upgrade Now</button>
       </div>
     </div>
   );
