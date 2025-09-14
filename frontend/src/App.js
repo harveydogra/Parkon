@@ -822,8 +822,8 @@ function App() {
       setUser(JSON.parse(storedUser));
     }
 
-    // Perform initial search for London center
-    performSearch({ latitude: 51.5074, longitude: -0.1278, radius_miles: 1.2 });
+    // Don't perform initial search - let user search when ready
+    // performSearch({ latitude: 51.5074, longitude: -0.1278, radius_miles: 1.2 });
 
     // PWA Install Prompt
     const handleBeforeInstallPrompt = (e) => {
